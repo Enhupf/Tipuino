@@ -1,3 +1,6 @@
+//test of serial communication with motor driver via UART. Functionality has been confimred for the one tested axis (dispenser)
+//Working version for testing inclusion of other axes using UART communication
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <TMCStepper.h>
@@ -381,3 +384,4 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
     digitalWrite(WHEEL_STEP_PIN, LOW);
     delayMicroseconds(1200 / WHEEL_SPEED);
   }
+
