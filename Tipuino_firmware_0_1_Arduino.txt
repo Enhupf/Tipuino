@@ -1,3 +1,6 @@
+//Tipunino firmware that allowed the first full box
+//pin number for Arduino Mega
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -341,3 +344,4 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
     digitalWrite(WHEEL_STEP_PIN, LOW);
     delayMicroseconds(1200 / WHEEL_SPEED);
   }
+
