@@ -1,3 +1,7 @@
+//Tipuino firmware which is the same as the on for Arduino Mega, but with pin numbers for the MKS Gen-L V2.1
+//LCD not acually tested, could theoretically be attached. SPI communication free for other screen/control unit
+//no serial communication with motor drivers, so as advanced as it gets in this context
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -347,3 +351,4 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
     digitalWrite(WHEEL_STEP_PIN, LOW);
     delayMicroseconds(3600 / WHEEL_SPEED);
   }
+
