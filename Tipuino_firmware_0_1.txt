@@ -114,9 +114,9 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
   void setup() {
     strip.begin();
     strip.setBrightness(255);
-    strip.setPixelColor(0, strip.Color(0, 0, 75));
-    strip.setPixelColor(1, strip.Color(0, 0, 75));
-    strip.setPixelColor(2, strip.Color(255, 255, 0));
+    strip.setPixelColor(0, strip.Color(0, 0, 150));
+    strip.setPixelColor(1, strip.Color(0, 0, 150));
+    strip.setPixelColor(2, strip.Color(180, 180, 180));
     strip.show();
 
     u8g2_lcd.begin();
@@ -284,8 +284,9 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
         moveDispenserToNextClear();
         dispenseCount++;
       }
-    strip.setPixelColor(0, strip.Color(75, 0, 0));
-    strip.setPixelColor(1, strip.Color(75, 0, 0));
+    strip.setPixelColor(0, strip.Color(150, 0, 0));
+    strip.setPixelColor(1, strip.Color(150, 0, 0));
+    strip.show();
   }
 
   void loop() {
@@ -495,4 +496,5 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
       u8g2_lcd.print("tips: ");
       u8g2_lcd.print(dispenseCount);
     } while (u8g2_lcd.nextPage());
+
  }
