@@ -70,7 +70,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
   #define DISPENSER_CLEAR_STEPS	     300
 
   //Screw
-  #define SCREW_EXTRA_STEPS          60
+  #define SCREW_EXTRA_STEPS          20
   #define SCREW_SPEED                3
 
   // Box
@@ -79,8 +79,8 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
   #define BOX_WIGGLE                 400
 
   // Wheel
-  #define WHEEL_SPEED                2
-  #define WHEEL_CLEAR_EXTRA_STEPS    700
+  #define WHEEL_SPEED                4
+  #define WHEEL_CLEAR_EXTRA_STEPS    200
   #define WHEEL_MOVE_PAUSE_MS        1000
   #define WHEEL_WIGGLE               50
 
@@ -498,3 +498,4 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
     } while (u8g2_lcd.nextPage());
 
  }
+
