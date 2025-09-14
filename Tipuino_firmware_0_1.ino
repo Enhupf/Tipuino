@@ -239,8 +239,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
     digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
     digitalWrite(BOX_ENABLE_PIN, HIGH);
     digitalWrite(WHEEL_ENABLE_PIN, HIGH);
-
-    homeDispenserMotor();
+    
     u8g2_lcd.firstPage();
       do {
         u8g2_lcd.setFont(u8g2_font_6x12_tr);
@@ -248,6 +247,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
         u8g2_lcd.drawStr(10, 10, "Tipuino starting...");
         u8g2_lcd.drawStr(10, 20, "homing dispenser");
         } while ( u8g2_lcd.nextPage() );
+    homeDispenserMotor();
     dispenserHomed = true;
     u8g2_lcd.firstPage();
       do {
@@ -496,5 +496,6 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
     } while (u8g2_lcd.nextPage());
 
  }
+
 
 
