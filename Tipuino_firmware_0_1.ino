@@ -403,8 +403,6 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
     digitalWrite(BOX_DIR_PIN, LOW);
     while (digitalRead(BOX_LIMIT_SWITCH_PIN) == HIGH) stepBoxMotor();
     digitalWrite(BOX_DIR_PIN, HIGH);
-    while (digitalRead(BOX_ENCODER_PIN) == HIGH) stepBoxMotor();
-    delay(DEBOUNCE_DELAY);
     while (digitalRead(BOX_ENCODER_PIN) == LOW) stepBoxMotor();
     for (int i = 0; i < BOX_CLEAR_EXTRA_STEPS; i++) stepBoxMotor();
     digitalWrite(BOX_ENABLE_PIN, HIGH);
@@ -498,4 +496,5 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
     } while (u8g2_lcd.nextPage());
 
  }
+
 
