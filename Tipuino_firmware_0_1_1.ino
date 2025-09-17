@@ -19,6 +19,8 @@
 #define ENCODER_A_PIN               31
 #define ENCODER_B_PIN               33
 #define ENCODER_BUTTON_PIN          35
+// Buzzer pin for sound
+#define  BUZZER_PIN                 37
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(3, NEOPIXEL_PIN, NEO_GRB);
 U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, LCD_RS, LCD_RESET);
@@ -88,6 +90,19 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 
 #define R_SENSE 0.11f
 
+#define NOTE_C5  523
+#define NOTE_E5  659
+#define NOTE_G5  784
+#define NOTE_AS5 932
+#define NOTE_C6  1047
+#define NOTE_D6  1175
+
+//finish melody set-up
+int tempo = 120; // beats per minute
+int wholeNote = (60000 * 4) / tempo; // length of a whole note in ms
+int melody[] = {NOTE_D6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_AS5, NOTE_C6, NOTE_D6, 0, NOTE_C6, NOTE_D6};
+int noteDurations[] = {12, 12, 12, 4, 4, 4, 12, 12, 12, 2};
+
 SoftwareSerial DISPENSER_UART(DISPENSER_RX, DISPENSER_TX); 
 TMC2209Stepper dispenserDriver(&DISPENSER_UART, R_SENSE, 0b00);
 
@@ -152,6 +167,33 @@ void showStatus() {
     u8g2_lcd.print("tips: ");
     u8g2_lcd.print(dispenseCount);
   } while (u8g2_lcd.nextPage());
+}
+
+void finishMelody(){
+  for (int thisNote = 0; thisNote < 10; thisNote++) {
+    int noteDuration = wholeNote / noteDurations[thisNote];
+    if (melody[thisNote] != 0) {
+      tone(BUZZER_PIN, melody[thisNote], noteDuration * 0.9); // 90% play
+    }
+    delay(noteDuration); // total time for this note (sound + rest)
+  }
+    noTone(BUZZER_PIN);
+ }
+
+void startBeep(){
+tone(BUZZER_PIN, NOTE_D6, 200);
+delay(200);
+noTone(BUZZER_PIN);
+}
+
+void homingBeep(){
+tone(BUZZER_PIN, NOTE_C5, 200);
+delay(300);
+tone(BUZZER_PIN, NOTE_E5, 200);
+delay(300);
+tone(BUZZER_PIN, NOTE_G5, 200);
+delay(200);
+noTone(BUZZER_PIN);
 }
 
 void setup() {
@@ -323,6 +365,8 @@ void setup() {
     digitalWrite(BOX_ENABLE_PIN, HIGH);
     digitalWrite(WHEEL_ENABLE_PIN, HIGH);
 
+    startBeep();
+  
     u8g2_lcd.firstPage();
       do {
         u8g2_lcd.setFont(u8g2_font_6x12_tr);
@@ -370,6 +414,8 @@ void setup() {
     strip.setPixelColor(0, strip.Color(150, 0, 0));
     strip.setPixelColor(1, strip.Color(150, 0, 0));
     strip.show();
+
+    homingBeep();
   }
 
   void loop() {
@@ -467,6 +513,8 @@ void setup() {
         u8g2_lcd.drawStr(10, 20, "Happy pipetting!");
         } while ( u8g2_lcd.nextPage() );
 
+    finishMelody();
+    
     while (true) {}
   }
 
