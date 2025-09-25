@@ -94,7 +94,7 @@ void moveWheelToNextClearPosition();
   #define WHEEL_SPEED                4
   #define WHEEL_CLEAR_EXTRA_STEPS    200
   #define WHEEL_MOVE_PAUSE_MS        1000
-  #define WHEEL_WIGGLE               50
+  #define WHEEL_WIGGLE               150
 
   // Sequencing
   #define BOX_MOVES                  12
