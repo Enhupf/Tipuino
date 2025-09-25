@@ -1,0 +1,27 @@
+TMCStepper.h
+
+void homeScrewMotor() {
+  digitalWrite(SCREW_ENABLE_PIN, LOW);
+  digitalWrite(SCREW_DIR_PIN, HIGH);
+
+  int stepCount = 0;
+  const int MAX_STEPS = 3300;
+
+  while (stepCount < MAX_STEPS) {
+    stepScrewMotor();
+    stepCount++;
+
+    if (digitalRead(SCREW_ENCODER_PIN) == HIGH) {
+      // Found encoder → success
+      while (digitalRead(SCREW_ENCODER_PIN) == HIGH) stepScrewMotor();
+      for (int i = 0; i < SCREW_EXTRA_STEPS; i++) stepScrewMotor();
+      digitalWrite(SCREW_ENABLE_PIN, HIGH);
+      return;
+    }
+  }
+
+  // Timeout → error state
+  digitalWrite(SCREW_ENABLE_PIN, HIGH);
+  machineState = STATE_ERROR_SCREW;
+  enterScrewError();
+}
