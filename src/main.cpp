@@ -29,7 +29,6 @@ void moveWheelToNextClearPosition();
 
 
 
-
   // motherboard fan
   // #define FAN_PIN                 9
 
