@@ -24,6 +24,7 @@ namespace tipuino {
      * @param
      * @param
      * @param The pin that produces the signal indicating that the motor is "homed".
+     * @param The direction that the stepper motor needs to move in order to "home" itself.
     */
     HomingStepperMotorDriver(
       Hal* hal,
@@ -32,13 +33,24 @@ namespace tipuino {
       pin_t dirPin,
       pin_t uartRx,
       pin_t uartTx,
-      pin_t homePin
+      pin_t homePin,
+      pin_value_t homeDirection
     );
   };
 
+  /**
+   * @breif Check if the stepper motor is "homed"
+   *
+   * This function reads the physical voltage of the homing switch. It then compares if the
+   * voltage is set to @see LOW
+   */
   bool isHome() const;
 
+  void homeMotor();
+
+  private:
   Pin homePin;
+  cosnt pin_value_t homeDirection;
 }
 
 #endif

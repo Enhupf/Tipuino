@@ -4,19 +4,17 @@
 namespace tipuino {
 
   class Hal;
+  class Pin;
 
   class UsePin final {
 
     public:
-    UsePin(const Hal* hal, pin_t pin, pin_value_t& value)
-    : hal(hal), pin(pin), initial(value) { hal->writePin(inv(value)); value = inv(value); }
+    UsePin(Pin& targetPin);
 
-    ~UsePin() { hal->writePin(not(value)); value = inv(value); }
+    ~UsePin();
 
     private:
-    const Hal* hal;
-    const pin_t pin;
-    pin_value_t& value;
+    Pin& pin;
 
   };
 
@@ -32,13 +30,38 @@ namespace tipuino {
    */
   class Pin final {
     public:
-    Pin(const Hal* hal, const pin_t pin, pin_value_t initial)
-    : hal(hal), pin(pin), value(value) { hal->writePin(initial); }
+    Pin(const Hal* hal, const pin_t pinNumber, pin_value_t initialValue);
+
+    Pin(const Hal* hal);
 
     /**
      * @breif Safely toggle a Pin and ensure it gets reset.
      */
-    UsePin use() { return UsePin(hal, pin, value); }
+    UsePin use();
+
+    /**
+     * @breif Convenience function to invert the value of the pin.
+     */
+    void invValue() { write(inv(value)); }
+
+    /**
+     * @breif Write a specific value to the pin.
+     *
+     * This method simply uses the @see Hal::writePin method to update the physical voltage
+     * of the pin. It also updates an internal state variable which is used to keep track
+     * of the current value.
+     */
+    void write(const pin_value_t value);
+
+    /**
+     * @breif Get the current value of the Pin
+     *
+     * This method does not read the physical voltage, only returns the internal state variable.
+     * If the call the @see Pin::sync method first if you expect the physical voltage to be different
+     * from the internal variable. For instance, maybe the pin is attached to a beam sensor that might
+     * have becomed interrupted after some action.
+     */
+    pin_value_t value() { return value; }
 
     private:
     const Hal* hal;
@@ -48,7 +71,7 @@ namespace tipuino {
   };
 
   /**
-   * @breif The "Hardware Abstraction Layre" between our fimrware and the hardware.
+   * @breif The "Hardware Abstraction Layer" between our fimrware and the hardware.
    *
    * This class serves as an abstraction layer between the Tipuino's logic and
    * the hardware device running this logic. The main purpose of the class is to
@@ -69,6 +92,15 @@ namespace tipuino {
      * to perform the task.
      */
     virtual void writePin(const pin_t pin, const pin_value_t value) const = 0;
+
+    /**
+     * @breif Read the physical voltage of the given pin.
+     *
+     * This function abstracts away the process of reading a value from a pin.
+     * Subclasses are meant to implement it using the platform specific functions to
+     * perform this task.
+     */
+    virtual pin_value_t readPin(const pin_t pin) const = 0;
   };
 }
 
