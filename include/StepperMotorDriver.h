@@ -4,6 +4,7 @@
 #include <TMCStepper.h>
 
 #include "prelude.h"
+#include "Hal.h"
 
 namespace tipuino {
 
@@ -25,6 +26,7 @@ namespace tipuino {
       \param Pin for the uart transmission line.
     */
     StepperMotorDriver(
+      Hal* hal,
       pin_t enablePin,
       pin_t stepPin,
       pin_t dirPin,
@@ -41,12 +43,15 @@ namespace tipuino {
 
     void setDirection(const bool direction);
 
-    bool direction() const;
+    pin_value_t direction() const;
 
     private:
     bool direction;
     SoftwareSerial uart;
     TMC2209Stepper uartDriver;
+    Pin enablePin;
+    Pin stepPin;
+    Pin dirPin;
   };
 }
 
