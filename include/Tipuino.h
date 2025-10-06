@@ -36,6 +36,7 @@ namespace tipuino {
     private:
     TipuinoState state;
     const Hal* hal;
+    HomingStepperMotorDriver dispenserMotorDriver
 
     /**
      * @breif The main initialization method.

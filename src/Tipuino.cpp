@@ -2,7 +2,13 @@
 
 namespace tipuino {
 
-  Tipuino::Tipuino(Hal* hal) : hal(hal), state(Initializing) {};
+  Tipuino::Tipuino(
+    Hal* hal,
+    HomingStepperMotorDriver&& dispenserMotorDriver
+  ) : hal(hal)
+    , state(Initializing)
+    , dispenserMotorDriver(dispenserMotorDriver)
+  {}
 
   void Tipuino::run() {
 
