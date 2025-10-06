@@ -87,12 +87,17 @@ void moveWheelToNextClearPosition();
 
 void setup() {
 
-  tipuino::StepperMotorDriver stepperMotorDriver(
-    DISPENSER_ENABLE_PIN,
-    DISPENSER_STEP_PIN,
-    DISPENSER_DIR_PIN,
-    DISPENSER_RX,
-    DISPENSER_TX
+  HAL_CLASS hal;
+
+  tipuino::Tipuino tipuino(
+    &hal,
+    tipuino::StepperMotorDriver stepperMotorDriver(
+      DISPENSER_ENABLE_PIN,
+      DISPENSER_STEP_PIN,
+      DISPENSER_DIR_PIN,
+      DISPENSER_RX,
+      DISPENSER_TX
+    )
   );
 
     strip.begin();

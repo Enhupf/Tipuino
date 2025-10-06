@@ -1,6 +1,8 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
+#include "hal/Atmega2560.h"
+
 /* This file defines the constants that are used to
  * communicate with the hardware.
 */
@@ -47,5 +49,7 @@
 #define WHEEL_BEAM_PIN             14
 #define WHEEL_RX                   A9
 #define WHEEL_TX                   40
+
+#define HAL_CLASS Atmega2560
 
 #endif
