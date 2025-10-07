@@ -14,7 +14,7 @@ namespace tipuino::hal {
     void writePin(const pin_t pin, const pin_value_t value) const override;
 
     pin_value_t readPin(const pin_t pin) const override;
-  }
+  };
 }
 
 #endif

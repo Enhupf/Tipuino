@@ -9,24 +9,24 @@ namespace tipuino {
 
   StepperMotorDriver::StepperMotorDriver(
     Hal* hal,
-    pin_t enablePin,
-    pin_t stepPin,
-    pin_t dirPin,
-    pin_t uartRx,
-    pin_t uartTx
-  ) : enablePin(hal, enablePin, HIGH)
+    const pin_t enablePin,
+    const pin_t stepPin,
+    const pin_t dirPin,
+    const pin_t uartRx,
+    const pin_t uartTx
+  ) : uart(uartRx, uartTx)
+    , uartDriver(&uart, R_SENSE, BAUD_RATE) 
+    , enablePin(hal, enablePin, HIGH)
     , stepPin(hal, stepPin, LOW)
     , dirPin(hal, dirPin)
-    , uart(uartRx, uartTx)
-    , uartDriver(&uart, R_SENSE, BAUD_RATE) 
   {
   }
 
-  pin_value_t direction() const {
+  pin_value_t StepperMotorDriver::getDirection() const {
     return dirPin.value();
   }
 
-  void step() const {
+  void StepperMotorDriver::step() {
 
     auto useEnable = enablePin.use();
     {

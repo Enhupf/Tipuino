@@ -1,4 +1,6 @@
-#include "HomiingStepperMotorDriver.h"
+#include "HomingStepperMotorDriver.h"
+
+#include "TipuinoError.h"
 
 namespace tipuino {
 
@@ -9,21 +11,21 @@ namespace tipuino {
 
   HomingStepperMotorDriver::HomingStepperMotorDriver(
     Hal* hal,
-    pin_t enablePin,
-    pin_t stepPin,
-    pin_t dirPin,
-    pin_t uartRx,
-    pin_t uartTx,
-    pin_t homePin
-    pin_value_t homeDirection
+    const pin_t enablePin,
+    const pin_t stepPin,
+    const pin_t dirPin,
+    const pin_t uartRx,
+    const pin_t uartTx,
+    const pin_t homePin,
+    const pin_value_t homeDirection
   ) : StepperMotorDriver(hal, enablePin, stepPin, dirPin, uartRx, uartTx)
     , homePin(hal, homePin)
     , homeDirection(homeDirection)
   {
   }
 
-  bool HomingStepperMotorDriver::isHome() const {
-    return hal->readPin(homePin) == LOW;
+  bool HomingStepperMotorDriver::isHome() {
+    return homePin.sync() == LOW;
   }
 
   void HomingStepperMotorDriver::homeMotor() {
@@ -32,7 +34,7 @@ namespace tipuino {
     while(!isHome()) {
 
       if (++count > HOMING_LIMIT) {
-        throw TipuinoError("Unable to home the stepper motor.");
+        throw TipuinoError::TipuinoError;
       }
 
     }

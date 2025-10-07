@@ -8,6 +8,15 @@
 
 namespace tipuino {
 
+  /**
+   * @breif Enum used to explicitly represent the movement directions of the stepper.
+   *
+   */
+  enum StepperDirection {
+    DirectionLeft = LOW
+  , DirectionRight = HIGH
+  };
+
   //! Represents a stepper motor along with supporting sensors 
   /*!
    * Class meant to represent a stepper motor. Takes care of managing
@@ -27,26 +36,31 @@ namespace tipuino {
     */
     StepperMotorDriver(
       Hal* hal,
-      pin_t enablePin,
-      pin_t stepPin,
-      pin_t dirPin,
-      pin_t uartRx,
-      pin_t uartTx
+      const pin_t enablePin,
+      const pin_t stepPin,
+      const pin_t dirPin,
+      const pin_t uartRx,
+      const pin_t uartTx
     );
 
-    const pin_t enablePin;
-    const pin_t stepPin;
-    const pin_t dirPin;
+    /**
+     * @breif Moves the stepper motor a single step
+     */
+    void step();
 
-    //! Moves the stepper motor a single step
-    void step() const;
+    /**
+     * @breif Set the movement direction of the stepper.
+     *
+     * This method controls the direction on which the Stepper
+     * will move when the @ref tipuino::StepperMotorDriver.step method
+     * is called.
+     */
+    void setDirection(const StepperDirection direction);
 
-    void setDirection(const bool direction);
-
-    pin_value_t direction() const;
+    pin_value_t getDirection() const;
 
     private:
-    bool direction;
+    StepperDirection direction;
     SoftwareSerial uart;
     TMC2209Stepper uartDriver;
     Pin enablePin;

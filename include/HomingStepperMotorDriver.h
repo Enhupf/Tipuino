@@ -2,6 +2,7 @@
 #define HOMING_STEPPER_MOTOR_DRIVER_H
 
 #include "Hal.h"
+#include "StepperMotorDriver.h"
 
 namespace tipuino {
 
@@ -28,29 +29,36 @@ namespace tipuino {
     */
     HomingStepperMotorDriver(
       Hal* hal,
-      pin_t enablePin,
-      pin_t stepPin,
-      pin_t dirPin,
-      pin_t uartRx,
-      pin_t uartTx,
-      pin_t homePin,
-      pin_value_t homeDirection
+      const pin_t enablePin,
+      const pin_t stepPin,
+      const pin_t dirPin,
+      const pin_t uartRx,
+      const pin_t uartTx,
+      const pin_t homePin,
+      const pin_value_t homeDirection
     );
+
+    /**
+     * @breif Check if the stepper motor is "homed"
+     *
+     * This function reads the physical voltage of the homing switch. It then compares if the
+     * voltage is set to @see LOW
+     */
+    bool isHome();
+  
+    /**
+     * @breif The main homing routine.
+     *
+     * This method wil trigger the homing routine. This will move the stepper
+     * unitl it reaches the "home" state as established by it's accompanying
+     * sensor.
+     */
+    void homeMotor();
+  
+    private:
+    Pin homePin;
+    const pin_value_t homeDirection;
   };
-
-  /**
-   * @breif Check if the stepper motor is "homed"
-   *
-   * This function reads the physical voltage of the homing switch. It then compares if the
-   * voltage is set to @see LOW
-   */
-  bool isHome() const;
-
-  void homeMotor();
-
-  private:
-  Pin homePin;
-  cosnt pin_value_t homeDirection;
 }
 
 #endif
