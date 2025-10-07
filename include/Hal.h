@@ -1,6 +1,8 @@
 #ifndef HAL_H
 #define HAL_H
 
+#include "prelude.h"
+
 namespace tipuino {
 
   class Hal;
@@ -9,12 +11,12 @@ namespace tipuino {
   class UsePin final {
 
     public:
-    UsePin(Pin& targetPin);
+    UsePin(Pin* targetPin);
 
     ~UsePin();
 
     private:
-    Pin& pin;
+    Pin* pin;
 
   };
 
@@ -30,9 +32,9 @@ namespace tipuino {
    */
   class Pin final {
     public:
-    Pin(const Hal* hal, const pin_t pinNumber, pin_value_t initialValue);
+    Pin(const Hal* hal, const pin_t pinNumber, const pin_value_t initialValue);
 
-    Pin(const Hal* hal);
+    Pin(const Hal* hal, const pin_t pinNumber);
 
     /**
      * @breif Safely toggle a Pin and ensure it gets reset.
@@ -42,7 +44,7 @@ namespace tipuino {
     /**
      * @breif Convenience function to invert the value of the pin.
      */
-    void invValue() { write(inv(value)); }
+    void invValue() { write(inv(this->value)); }
 
     /**
      * @breif Write a specific value to the pin.
@@ -51,7 +53,7 @@ namespace tipuino {
      * of the pin. It also updates an internal state variable which is used to keep track
      * of the current value.
      */
-    void write(const pin_value_t value);
+    void write(const pin_value_t newValue);
 
     /**
      * @breif Get the current value of the Pin
@@ -61,7 +63,17 @@ namespace tipuino {
      * from the internal variable. For instance, maybe the pin is attached to a beam sensor that might
      * have becomed interrupted after some action.
      */
-    pin_value_t value() { return value; }
+    pin_value_t getValue() { return value; }
+
+    /**
+     * @breif Sync the Pin object with the physical voltage.
+     *
+     * The Pin class does not observe wether the voltage of a Pin might have
+     * changed due to some event in the hardware. This function will force
+     * the pin object to read the current physical voltage and sync the internal
+     * variable.
+     */
+    pin_value_t sync();
 
     private:
     const Hal* hal;
@@ -81,7 +93,7 @@ namespace tipuino {
    */
   class Hal {
 
-    virtual Hal() = 0;
+    public:
     virtual ~Hal() = 0;
 
     /**

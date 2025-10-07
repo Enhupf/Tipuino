@@ -16,7 +16,7 @@ namespace tipuino {
   , FatalError /**< Tipuino has encountered an error from which it cannot recover. It will alert the humman before exiting. */
   };
 
-  class Tipuino {
+  class Tipuino final {
 
     public:
     Tipuino(
@@ -34,9 +34,9 @@ namespace tipuino {
     void run();
 
     private:
-    TipuinoState state;
     const Hal* hal;
-    HomingStepperMotorDriver dispenserMotorDriver
+    TipuinoState state;
+    HomingStepperMotorDriver dispenserMotorDriver;
 
     /**
      * @breif The main initialization method.
