@@ -35,7 +35,7 @@ namespace tipuino {
       const pin_t uartRx,
       const pin_t uartTx,
       const pin_t homePin,
-      const pin_value_t homeDirection
+      const StepperDirection homeDirection
     );
 
     /**
@@ -57,7 +57,7 @@ namespace tipuino {
   
     private:
     Pin homePin;
-    const pin_value_t homeDirection;
+    const StepperDirection homeDirection;
   };
 }
 

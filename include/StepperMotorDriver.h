@@ -13,8 +13,8 @@ namespace tipuino {
    *
    */
   enum StepperDirection {
-    DirectionLeft = LOW
-  , DirectionRight = HIGH
+    DirectionLow = LOW
+  , DirectionHigh = HIGH
   };
 
   //! Represents a stepper motor along with supporting sensors 

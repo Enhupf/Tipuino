@@ -63,7 +63,7 @@ namespace tipuino {
      * from the internal variable. For instance, maybe the pin is attached to a beam sensor that might
      * have becomed interrupted after some action.
      */
-    pin_value_t getValue() { return value; }
+    pin_value_t getValue() const { return value; }
 
     /**
      * @breif Sync the Pin object with the physical voltage.

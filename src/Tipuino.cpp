@@ -18,7 +18,8 @@ namespace tipuino {
         case Initializing:
           state = onInitializing();
           break;
-
+        default:
+          state = TipuinoState::FatalError;
       }
     }
   }

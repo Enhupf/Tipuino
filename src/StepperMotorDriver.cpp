@@ -23,7 +23,7 @@ namespace tipuino {
   }
 
   pin_value_t StepperMotorDriver::getDirection() const {
-    return dirPin.value();
+    return dirPin.getValue();
   }
 
   void StepperMotorDriver::step() {

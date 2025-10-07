@@ -7,7 +7,7 @@
 #endif
 
 #include "platform.h"
-#include "StepperMotorDriver.h"
+#include "Tipuino.h"
 
 
 
@@ -91,12 +91,15 @@ void setup() {
 
   tipuino::Tipuino tipuino(
     &hal,
-    tipuino::StepperMotorDriver stepperMotorDriver(
+    tipuino::HomingStepperMotorDriver(
+      &hal,
       DISPENSER_ENABLE_PIN,
       DISPENSER_STEP_PIN,
       DISPENSER_DIR_PIN,
       DISPENSER_RX,
-      DISPENSER_TX
+      DISPENSER_TX,
+      DISPENSER_LIMIT_SWITCH_PIN,
+      tipuino::StepperDirection::DirectionLow
     )
   );
 

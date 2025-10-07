@@ -20,4 +20,6 @@ namespace tipuino {
 
   pin_value_t Pin::sync() { value = hal->readPin(pin); return value; }
 
+  Hal::~Hal() {}
+
 }

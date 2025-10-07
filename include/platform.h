@@ -50,6 +50,6 @@
 #define WHEEL_RX                   A9
 #define WHEEL_TX                   40
 
-#define HAL_CLASS Atmega2560
+#define HAL_CLASS tipuino::hal::Atmega2560
 
 #endif
