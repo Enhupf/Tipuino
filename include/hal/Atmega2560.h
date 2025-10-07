@@ -9,7 +9,7 @@ namespace tipuino::hal {
 
     public:
     Atmega2560() {}
-    ~Atmega2560() {}
+    ~Atmega2560() override {}
 
     void writePin(const pin_t pin, const pin_value_t value) const override;
 

@@ -17,7 +17,7 @@ namespace tipuino {
     const pin_t uartRx,
     const pin_t uartTx,
     const pin_t homePin,
-    const pin_value_t homeDirection
+    const StepperDirection homeDirection
   ) : StepperMotorDriver(hal, enablePin, stepPin, dirPin, uartRx, uartTx)
     , homePin(hal, homePin)
     , homeDirection(homeDirection)
