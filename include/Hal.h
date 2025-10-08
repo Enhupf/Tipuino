@@ -1,12 +1,17 @@
 #ifndef HAL_H
 #define HAL_H
 
-#include "prelude.h"
+#include "stdint.h"
 
 namespace tipuino {
 
   class Hal;
   class Pin;
+  enum class PinValue : uint8_t;
+  enum class PinMode : uint8_t;
+  using pin_t = uint8_t;
+
+  inline PinValue inv(const PinValue value);
 
   class UsePin final {
 
@@ -32,7 +37,7 @@ namespace tipuino {
    */
   class Pin final {
     public:
-    Pin(const Hal* hal, const pin_t pinNumber, const pin_value_t initialValue);
+    Pin(const Hal* hal, const pin_t pinNumber, const PinValue initialValue);
 
     Pin(const Hal* hal, const pin_t pinNumber);
 
@@ -53,7 +58,7 @@ namespace tipuino {
      * of the pin. It also updates an internal state variable which is used to keep track
      * of the current value.
      */
-    void write(const pin_value_t newValue);
+    void write(const PinValue newValue);
 
     /**
      * @breif Get the current value of the Pin
@@ -63,7 +68,7 @@ namespace tipuino {
      * from the internal variable. For instance, maybe the pin is attached to a beam sensor that might
      * have becomed interrupted after some action.
      */
-    pin_value_t getValue() const { return value; }
+    PinValue getValue() const { return value; }
 
     /**
      * @breif Sync the Pin object with the physical voltage.
@@ -73,12 +78,12 @@ namespace tipuino {
      * the pin object to read the current physical voltage and sync the internal
      * variable.
      */
-    pin_value_t sync();
+    PinValue sync();
 
     private:
     const Hal* hal;
     const pin_t pin;
-    pin_value_t value;
+    PinValue value;
 
   };
 
@@ -103,7 +108,7 @@ namespace tipuino {
      * Subclasses are meant to implement it using the hardware specific functions
      * to perform the task.
      */
-    virtual void writePin(const pin_t pin, const pin_value_t value) const = 0;
+    virtual void writePin(const pin_t pin, const PinValue value) const = 0;
 
     /**
      * @breif Read the physical voltage of the given pin.
@@ -112,7 +117,12 @@ namespace tipuino {
      * Subclasses are meant to implement it using the platform specific functions to
      * perform this task.
      */
-    virtual pin_value_t readPin(const pin_t pin) const = 0;
+    virtual PinValue readPin(const pin_t pin) const = 0;
+
+    /**
+     * @breif Set the operiation mode of the given pin.
+     */
+    virtual void pinMode(const pin_t pin, const PinMode mode) const = 0;
   };
 }
 

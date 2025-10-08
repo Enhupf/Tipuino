@@ -3,19 +3,9 @@
 
 #include <TMCStepper.h>
 
-#include "prelude.h"
 #include "Hal.h"
 
 namespace tipuino {
-
-  /**
-   * @breif Enum used to explicitly represent the movement directions of the stepper.
-   *
-   */
-  enum StepperDirection {
-    DirectionLow = LOW
-  , DirectionHigh = HIGH
-  };
 
   //! Represents a stepper motor along with supporting sensors 
   /*!
@@ -55,12 +45,12 @@ namespace tipuino {
      * will move when the @ref tipuino::StepperMotorDriver.step method
      * is called.
      */
-    void setDirection(const StepperDirection direction);
+    void setDirection(const PinValue direction);
 
-    pin_value_t getDirection() const;
+    PinValue getDirection() const;
 
     private:
-    StepperDirection direction;
+    PinValue direction;
     SoftwareSerial uart;
     TMC2209Stepper uartDriver;
     Pin enablePin;

@@ -1,6 +1,8 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
+#include "Arduino.h"
+
 #include "hal/Atmega2560.h"
 
 /* This file defines the constants that are used to
@@ -51,5 +53,31 @@
 #define WHEEL_TX                   40
 
 #define HAL_CLASS tipuino::hal::Atmega2560
+
+namespace tipuino {
+  enum class PinValue : uint8_t {
+    PinValueLow = LOW,
+    PinValueHigh = HIGH
+  };
+  
+  enum class PinMode : uint8_t {
+    PinModeOutput = OUTPUT
+  , PinModeInputPullup = INPUT_PULLUP
+  };
+  
+  /**
+   * @breif Enum used to explicitly represent the movement directions of the stepper.
+   *
+   */
+  enum class StepperDirection : uint8_t {
+    DirectionLow = LOW
+  , DirectionHigh = HIGH
+  };
+  
+  inline PinValue inv(const PinValue value) {
+  
+    return value == PinValue::PinValueLow ? PinValue::PinValueHigh : PinValue::PinValueLow;
+  }
+}
 
 #endif
