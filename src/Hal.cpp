@@ -8,7 +8,7 @@ namespace tipuino {
   UsePin::~UsePin() { pin->invValue(); }
 
   //Pin
-  Pin::Pin(const Hal* hal, const pin_t pinNumber, const pin_value_t initialValue)
+  Pin::Pin(const Hal* hal, const pin_t pinNumber, const PinValue initialValue)
     : hal(hal), pin(pinNumber), value(initialValue) { hal->writePin(pin, initialValue); }
 
   Pin::Pin(const Hal* hal, const pin_t pinNumber)
@@ -16,9 +16,9 @@ namespace tipuino {
 
   UsePin Pin::use() { return UsePin(this); }
 
-  void Pin::write(const pin_value_t newValue) { value = newValue; hal->writePin(pin, value); }
+  void Pin::write(const PinValue newValue) { value = newValue; hal->writePin(pin, value); }
 
-  pin_value_t Pin::sync() { value = hal->readPin(pin); return value; }
+  PinValue Pin::sync() { value = hal->readPin(pin); return value; }
 
   Hal::~Hal() {}
 

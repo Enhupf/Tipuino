@@ -11,9 +11,11 @@ namespace tipuino::hal {
     Atmega2560() {}
     ~Atmega2560() override {}
 
-    void writePin(const pin_t pin, const pin_value_t value) const override;
+    void writePin(const pin_t pin, const PinValue value) const override;
 
-    pin_value_t readPin(const pin_t pin) const override;
+    PinValue readPin(const pin_t pin) const override;
+
+    void pinMode(const pin_t pin, const PinMode mode) const override;
   };
 }
 

@@ -1,11 +1,13 @@
 #include "StepperMotorDriver.h"
 
-namespace tipuino {
+#include "platform.h"
 
-  #define R_SENSE 0.11f
-  #define BAUD_RATE 0B00
-  #define STEP_DELAY 10
-  #define STEP_SPEED_DELAY 300
+#define R_SENSE 0.11f
+#define BAUD_RATE 0B00
+#define STEP_DELAY 10
+#define STEP_SPEED_DELAY 300
+
+namespace tipuino {
 
   StepperMotorDriver::StepperMotorDriver(
     Hal* hal,
@@ -16,13 +18,13 @@ namespace tipuino {
     const pin_t uartTx
   ) : uart(uartRx, uartTx)
     , uartDriver(&uart, R_SENSE, BAUD_RATE) 
-    , enablePin(hal, enablePin, HIGH)
-    , stepPin(hal, stepPin, LOW)
-    , dirPin(hal, dirPin)
+    , enablePin(hal, enablePin, PinValue::PinValueHigh)
+    , stepPin(hal, stepPin, PinValue::PinValueHigh)
+    , dirPin(hal, dirPin, PinValue::PinValueLow)
   {
   }
 
-  pin_value_t StepperMotorDriver::getDirection() const {
+  PinValue StepperMotorDriver::getDirection() const {
     return dirPin.getValue();
   }
 

@@ -337,7 +337,7 @@ void setup() {
       DISPENSER_RX,
       DISPENSER_TX,
       DISPENSER_LIMIT_SWITCH_PIN,
-      tipuino::StepperDirection::DirectionLow
+      tipuino::PinValue::PinValueLow
     )
   );
 

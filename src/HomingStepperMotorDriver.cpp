@@ -1,5 +1,6 @@
 #include "HomingStepperMotorDriver.h"
 
+#include "platform.h"
 #include "TipuinoError.h"
 
 namespace tipuino {
@@ -17,7 +18,7 @@ namespace tipuino {
     const pin_t uartRx,
     const pin_t uartTx,
     const pin_t homePin,
-    const StepperDirection homeDirection
+    const PinValue homeDirection
   ) : StepperMotorDriver(hal, enablePin, stepPin, dirPin, uartRx, uartTx)
     , homePin(hal, homePin)
     , homeDirection(homeDirection)
@@ -25,7 +26,7 @@ namespace tipuino {
   }
 
   bool HomingStepperMotorDriver::isHome() {
-    return homePin.sync() == LOW;
+    return homePin.sync() == PinValue::PinValueLow;
   }
 
   void HomingStepperMotorDriver::homeMotor() {
