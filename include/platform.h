@@ -52,8 +52,6 @@
 #define WHEEL_RX                   A9
 #define WHEEL_TX                   40
 
-#define HAL_CLASS tipuino::hal::Atmega2560
-
 namespace tipuino {
   enum class PinValue : uint8_t {
     PinValueLow = LOW,
@@ -63,15 +61,6 @@ namespace tipuino {
   enum class PinMode : uint8_t {
     PinModeOutput = OUTPUT
   , PinModeInputPullup = INPUT_PULLUP
-  };
-  
-  /**
-   * @breif Enum used to explicitly represent the movement directions of the stepper.
-   *
-   */
-  enum class StepperDirection : uint8_t {
-    DirectionLow = LOW
-  , DirectionHigh = HIGH
   };
   
   inline PinValue inv(const PinValue value) {

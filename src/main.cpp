@@ -11,8 +11,6 @@
 #include "platform.h"
 #include "Tipuino.h"
 
-
-
 // Encoder pins for menu
 #define ENCODER_A_PIN               31
 #define ENCODER_B_PIN               33
@@ -73,11 +71,11 @@ int wholeNote = (60000 * 4) / tempo; // length of a whole note in ms
 int melody[] = {NOTE_D6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_AS5, NOTE_C6, NOTE_D6, 0, NOTE_C6, NOTE_D6};
 int noteDurations[] = {12, 12, 12, 4, 4, 4, 12, 12, 12, 2};
 
-SoftwareSerial DISPENSER_UART(DISPENSER_RX, DISPENSER_TX); 
-TMC2209Stepper dispenserDriver(&DISPENSER_UART, R_SENSE, 0b00);
-
 SoftwareSerial BOX_UART(BOX_RX, BOX_TX);
 TMC2209Stepper boxDriver(&BOX_UART, R_SENSE, 0b00);
+
+// SoftwareSerial DISPENSER_UART(DISPENSER_RX, DISPENSER_TX); 
+// TMC2209Stepper dispenserDriver(&DISPENSER_UART, R_SENSE, 0b00);
 
 SoftwareSerial SCREW_UART(SCREW_RX, SCREW_TX);
 TMC2209Stepper screwDriver(&SCREW_UART, R_SENSE, 0b00);
@@ -325,12 +323,12 @@ void wait() {
 
 void setup() {
 
-  HAL_CLASS hal;
+  tipuino::Hal* hal = tipuino::Hal::init();
 
   tipuino::Tipuino tipuino(
-    &hal,
+    hal,
     tipuino::HomingStepperMotorDriver(
-      &hal,
+      hal,
       DISPENSER_ENABLE_PIN,
       DISPENSER_STEP_PIN,
       DISPENSER_DIR_PIN,
@@ -427,9 +425,36 @@ void setup() {
   digitalWrite(WHEEL_STEP_PIN, LOW);
   digitalWrite(WHEEL_DIR_PIN, LOW);
 
+    // Dispenser pins
+    // pinMode(DISPENSER_STEP_PIN, OUTPUT);
+    // pinMode(DISPENSER_DIR_PIN, OUTPUT);
+    // pinMode(DISPENSER_ENABLE_PIN, OUTPUT);
+    // pinMode(DISPENSER_LIMIT_SWITCH_PIN, INPUT_PULLUP);
+    pinMode(DISPENSER_END_SWITCH_PIN, INPUT_PULLUP);
+    pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
 
-    DISPENSER_UART.begin(57600);
-    delay(20);
+    // Box pins
+    pinMode(BOX_STEP_PIN, OUTPUT);
+    pinMode(BOX_DIR_PIN, OUTPUT);
+    pinMode(BOX_ENABLE_PIN, OUTPUT);
+    pinMode(BOX_LIMIT_SWITCH_PIN, INPUT_PULLUP);
+    pinMode(BOX_ENCODER_PIN, INPUT_PULLUP);
+
+    // Screw pins
+    pinMode(SCREW_STEP_PIN, OUTPUT);
+    pinMode(SCREW_DIR_PIN, OUTPUT);
+    pinMode(SCREW_ENABLE_PIN, OUTPUT);
+    pinMode(SCREW_ENCODER_PIN, INPUT_PULLUP);
+
+    // Wheel pins
+    pinMode(WHEEL_STEP_PIN, OUTPUT);
+    pinMode(WHEEL_DIR_PIN, OUTPUT);
+    pinMode(WHEEL_ENABLE_PIN, OUTPUT);
+    pinMode(WHEEL_ENCODER_PIN, INPUT_PULLUP);
+    pinMode(WHEEL_BEAM_PIN, INPUT_PULLUP);
+    
+    // DISPENSER_UART.begin(57600);
+    // delay(20);
     BOX_UART.begin(57600);
     delay(20);
     SCREW_UART.begin(57600);
@@ -437,6 +462,7 @@ void setup() {
     WHEEL_UART.begin(57600);
     delay(20);
 
+    /*
     DISPENSER_UART.listen();
     delay(20);
     dispenserDriver.begin();     // init driver
@@ -453,6 +479,7 @@ void setup() {
     delay(20);
     dispenserDriver.I_scale_analog(false); // use internal current reference
     delay(50);
+    */
 
     BOX_UART.listen();
     delay(20);

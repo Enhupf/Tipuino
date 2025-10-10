@@ -15,7 +15,7 @@ namespace tipuino::hal {
 
     PinValue readPin(const pin_t pin) const override;
 
-    void pinMode(const pin_t pin, const PinMode mode) const override;
+    void setPinMode(const pin_t pin, const PinMode mode) const override;
   };
 }
 

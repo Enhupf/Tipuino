@@ -1,5 +1,7 @@
 #include "Hal.h"
 
+#include "platform.h"
+
 namespace tipuino {
 
   // UsePin
@@ -9,10 +11,18 @@ namespace tipuino {
 
   //Pin
   Pin::Pin(const Hal* hal, const pin_t pinNumber, const PinValue initialValue)
-    : hal(hal), pin(pinNumber), value(initialValue) { hal->writePin(pin, initialValue); }
+  : hal(hal), pin(pinNumber), value(initialValue)
+  {
+    hal->setPinMode(pin, PinMode::PinModeOutput);
+    hal->writePin(pin, initialValue);
+  }
 
   Pin::Pin(const Hal* hal, const pin_t pinNumber)
-    : hal(hal), pin(pinNumber), value(hal->readPin(pin)) {}
+  : hal(hal), pin(pinNumber)
+  {
+    hal->setPinMode(pin, PinMode::PinModeInputPullup);
+    value = hal->readPin(pin);
+  }
 
   UsePin Pin::use() { return UsePin(this); }
 
