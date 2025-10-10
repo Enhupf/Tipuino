@@ -122,8 +122,20 @@ namespace tipuino {
     /**
      * @breif Set the operiation mode of the given pin.
      */
-    virtual void pinMode(const pin_t pin, const PinMode mode) const = 0;
+    virtual void setPinMode(const pin_t pin, const PinMode mode) const = 0;
+
+    /**
+     * @breif Initialize the Hardware Abstraction Layer (HAL)
+     *
+     * This method is meant to be implemented by the specific HAL implementation
+     * that is to be used to run the Tipuino. It should take care of abstracting
+     * away the initialization of the software layer that communicates with the
+     * specific hardware platform that is being used for the Tipuino.
+     */
+    static Hal* init();
   };
+
+
 }
 
 #endif

@@ -2,13 +2,24 @@
 
 #include "platform.h"
 
+namespace tipuino {
+
+  Hal* Hal::init() {
+    return new hal::Atmega2560();
+  }
+}
+
 namespace tipuino::hal {
 
-  void Atmega2560::writePin(const pin_t pin, const PinValue value) const {}
-
-  PinValue Atmega2560::readPin(const pin_t pin) const {
-    return PinValue::PinValueLow;
+  void Atmega2560::writePin(const pin_t pin, const PinValue value) const {
+    digitalWrite(pin, static_cast<uint8_t>(value));
   }
 
-  void Atmega2560::pinMode(const pin_t pin, const PinMode mode) const {}
+  PinValue Atmega2560::readPin(const pin_t pin) const {
+    return static_cast<PinValue>(digitalRead(pin));
+  }
+
+  void Atmega2560::setPinMode(const pin_t pin, const PinMode mode) const {
+    pinMode(pin, static_cast<uint8_t>(mode));
+  }
 }

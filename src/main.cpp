@@ -9,8 +9,6 @@
 #include "platform.h"
 #include "Tipuino.h"
 
-
-
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(3, NEOPIXEL_PIN, NEO_GRB);
 
 U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, LCD_RS, LCD_RESET);
@@ -66,8 +64,8 @@ void moveWheelToNextClearPosition();
 
   #define R_SENSE 0.11f
 
-  SoftwareSerial DISPENSER_UART(DISPENSER_RX, DISPENSER_TX); 
-  TMC2209Stepper dispenserDriver(&DISPENSER_UART, R_SENSE, 0b00);
+  // SoftwareSerial DISPENSER_UART(DISPENSER_RX, DISPENSER_TX); 
+  // TMC2209Stepper dispenserDriver(&DISPENSER_UART, R_SENSE, 0b00);
 
   SoftwareSerial BOX_UART(BOX_RX, BOX_TX);
   TMC2209Stepper boxDriver(&BOX_UART, R_SENSE, 0b00);
@@ -87,12 +85,12 @@ void moveWheelToNextClearPosition();
 
 void setup() {
 
-  HAL_CLASS hal;
+  tipuino::Hal* hal = tipuino::Hal::init();
 
   tipuino::Tipuino tipuino(
-    &hal,
+    hal,
     tipuino::HomingStepperMotorDriver(
-      &hal,
+      hal,
       DISPENSER_ENABLE_PIN,
       DISPENSER_STEP_PIN,
       DISPENSER_DIR_PIN,
@@ -123,10 +121,10 @@ void setup() {
 
 
     // Dispenser pins
-    pinMode(DISPENSER_STEP_PIN, OUTPUT);
-    pinMode(DISPENSER_DIR_PIN, OUTPUT);
-    pinMode(DISPENSER_ENABLE_PIN, OUTPUT);
-    pinMode(DISPENSER_LIMIT_SWITCH_PIN, INPUT_PULLUP);
+    // pinMode(DISPENSER_STEP_PIN, OUTPUT);
+    // pinMode(DISPENSER_DIR_PIN, OUTPUT);
+    // pinMode(DISPENSER_ENABLE_PIN, OUTPUT);
+    // pinMode(DISPENSER_LIMIT_SWITCH_PIN, INPUT_PULLUP);
     pinMode(DISPENSER_END_SWITCH_PIN, INPUT_PULLUP);
     pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
 
@@ -150,8 +148,8 @@ void setup() {
     pinMode(WHEEL_ENCODER_PIN, INPUT_PULLUP);
     pinMode(WHEEL_BEAM_PIN, INPUT_PULLUP);
     
-    DISPENSER_UART.begin(57600);
-    delay(20);
+    // DISPENSER_UART.begin(57600);
+    // delay(20);
     BOX_UART.begin(57600);
     delay(20);
     SCREW_UART.begin(57600);
@@ -159,6 +157,7 @@ void setup() {
     WHEEL_UART.begin(57600);
     delay(20);
 
+    /*
     DISPENSER_UART.listen();
     delay(20);
     dispenserDriver.begin();     // init driver
@@ -175,6 +174,7 @@ void setup() {
     delay(20);
     dispenserDriver.I_scale_analog(false); // use internal current reference
     delay(50);
+    */
 
     BOX_UART.listen();
     delay(20);
