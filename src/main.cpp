@@ -65,6 +65,14 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define NOTE_C6  1047
 #define NOTE_D6  1175
 
+/*
+ * Forward declarations
+*/
+void stepDispenser();
+void stepWheelMotor();
+void stepBoxMotor();
+void stepScrewMotor();
+
 //finish melody set-up
 int tempo = 120; // beats per minute
 int wholeNote = (60000 * 4) / tempo; // length of a whole note in ms
@@ -149,19 +157,19 @@ void finishMelody(){
  }
 
 void startBeep(){
-tone(BUZZER_PIN, NOTE_D6, 200);
-delay(200);
-noTone(BUZZER_PIN);
+  tone(BUZZER_PIN, NOTE_D6, 200);
+  delay(200);
+  noTone(BUZZER_PIN);
 }
 
 void homingBeep(){
-tone(BUZZER_PIN, NOTE_C5, 200);
-delay(300);
-tone(BUZZER_PIN, NOTE_E5, 200);
-delay(300);
-tone(BUZZER_PIN, NOTE_G5, 200);
-delay(200);
-noTone(BUZZER_PIN);
+  tone(BUZZER_PIN, NOTE_C5, 200);
+  delay(300);
+  tone(BUZZER_PIN, NOTE_E5, 200);
+  delay(300);
+  tone(BUZZER_PIN, NOTE_G5, 200);
+  delay(200);
+  noTone(BUZZER_PIN);
 }
 
 void wait() {
@@ -240,7 +248,7 @@ void wait() {
       delay(WHEEL_MOVE_PAUSE_MS);
       return;
     }
-  digitalWrite(WHEEL_ENABLE_PIN, HIGH);
+    digitalWrite(WHEEL_ENABLE_PIN, HIGH);
   }
 
   void stepDispenser() {
@@ -382,10 +390,12 @@ void setup() {
   }
 
   // Dispenser
+  /*
   pinMode(DISPENSER_STEP_PIN, OUTPUT);
   pinMode(DISPENSER_DIR_PIN, OUTPUT);
   pinMode(DISPENSER_ENABLE_PIN, OUTPUT);
   pinMode(DISPENSER_LIMIT_SWITCH_PIN, INPUT_PULLUP);
+  */
   pinMode(DISPENSER_END_SWITCH_PIN, INPUT_PULLUP);
   pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
 
@@ -411,6 +421,7 @@ void setup() {
 
   pinMode(ENCODER_BUTTON_PIN, INPUT_PULLUP);
 
+  /*
   digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
   digitalWrite(BOX_ENABLE_PIN, HIGH);
   digitalWrite(SCREW_ENABLE_PIN, HIGH);
@@ -424,6 +435,7 @@ void setup() {
   digitalWrite(SCREW_DIR_PIN, LOW);
   digitalWrite(WHEEL_STEP_PIN, LOW);
   digitalWrite(WHEEL_DIR_PIN, LOW);
+  */
 
     // Dispenser pins
     // pinMode(DISPENSER_STEP_PIN, OUTPUT);
@@ -532,7 +544,7 @@ void setup() {
     wheelDriver.I_scale_analog(false); // use internal current reference
 
     digitalWrite(SCREW_ENABLE_PIN, HIGH);
-    digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
+    // digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
     digitalWrite(BOX_ENABLE_PIN, HIGH);
     digitalWrite(WHEEL_ENABLE_PIN, HIGH);
 
