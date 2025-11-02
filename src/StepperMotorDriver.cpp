@@ -24,11 +24,13 @@ namespace tipuino {
     , stepPin(hal, stepPin, PinValue::PinValueHigh)
     , dirPin(hal, dirPin, PinValue::PinValueLow)
   {
-    uart.begin(UART_BAUD_RATE);
-    delay(20);
     uart.listen();
     delay(20);
+    uart.begin(UART_BAUD_RATE);
+    delay(20);
     uartDriver.toff(4);
+    delay(20);
+    uartDriver.rms_current(800);
     delay(20);
     uartDriver.microsteps(STEPPER_MICROSTEPS);
     delay(20);
