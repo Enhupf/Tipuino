@@ -24,9 +24,10 @@ namespace tipuino {
     , stepPin(hal, stepPin, PinValue::PinValueHigh)
     , dirPin(hal, dirPin, PinValue::PinValueLow)
   {
-    uart.listen();
     delay(20);
     uart.begin(UART_BAUD_RATE);
+    delay(20);
+    uart.listen();
     delay(20);
     uartDriver.toff(4);
     delay(20);
