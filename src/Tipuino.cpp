@@ -10,6 +10,10 @@ namespace tipuino {
     , dispenserMotorDriver(dispenserMotorDriver)
   {}
 
+  void Tipuino::setup() {
+    dispenserMotorDriver.setup();
+  }
+
   void Tipuino::run() {
 
     while(state != TipuinoState::Exit) {

@@ -39,6 +39,11 @@ namespace tipuino {
     void step();
 
     /**
+     * @breif Function called to initialize the system
+     */
+    virtual void setup();
+
+    /**
      * @breif Set the movement direction of the stepper.
      *
      * This method controls the direction on which the Stepper

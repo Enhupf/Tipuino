@@ -32,6 +32,7 @@ namespace tipuino {
      * and update the state to the result of the method call.
      */
     void run();
+    void setup();
 
     private:
     const Hal* hal;

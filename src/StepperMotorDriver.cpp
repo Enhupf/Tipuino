@@ -23,7 +23,9 @@ namespace tipuino {
     , enablePin(hal, enablePin, PinValue::PinValueHigh)
     , stepPin(hal, stepPin, PinValue::PinValueHigh)
     , dirPin(hal, dirPin, PinValue::PinValueLow)
-  {
+  {}
+
+  void StepperMotorDriver::setup() {
     delay(20);
     uart.begin(UART_BAUD_RATE);
     delay(20);

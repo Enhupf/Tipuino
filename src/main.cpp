@@ -91,6 +91,23 @@ TMC2209Stepper screwDriver(&SCREW_UART, R_SENSE, 0b00);
 SoftwareSerial WHEEL_UART(WHEEL_RX, WHEEL_TX);
 TMC2209Stepper wheelDriver(&WHEEL_UART, R_SENSE, 0b00);
 
+tipuino::Hal* hal = tipuino::Hal::init();
+
+tipuino::Tipuino tipuino_instance(
+  hal,
+  tipuino::HomingStepperMotorDriver(
+    hal,
+    DISPENSER_ENABLE_PIN,
+    DISPENSER_STEP_PIN,
+    DISPENSER_DIR_PIN,
+    DISPENSER_RX,
+    DISPENSER_TX,
+    DISPENSER_LIMIT_SWITCH_PIN,
+    tipuino::PinValue::PinValueLow
+  )
+);
+
+
 // --- Globals ---
 bool dispenserHomed = false;
 int dispenseCount = 0;
@@ -331,22 +348,6 @@ void wait() {
 
 void setup() {
 
-  tipuino::Hal* hal = tipuino::Hal::init();
-
-  tipuino::Tipuino tipuino(
-    hal,
-    tipuino::HomingStepperMotorDriver(
-      hal,
-      DISPENSER_ENABLE_PIN,
-      DISPENSER_STEP_PIN,
-      DISPENSER_DIR_PIN,
-      DISPENSER_RX,
-      DISPENSER_TX,
-      DISPENSER_LIMIT_SWITCH_PIN,
-      tipuino::PinValue::PinValueLow
-    )
-  );
-
   strip.begin();
   strip.setBrightness(255);
   strip.setPixelColor(0, strip.Color(0, 0, 150));
@@ -396,6 +397,8 @@ void setup() {
   pinMode(DISPENSER_ENABLE_PIN, OUTPUT);
   pinMode(DISPENSER_LIMIT_SWITCH_PIN, INPUT_PULLUP);
   */
+  tipuino_instance.setup();
+
   pinMode(DISPENSER_END_SWITCH_PIN, INPUT_PULLUP);
   pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
 
