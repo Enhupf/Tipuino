@@ -23,6 +23,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 
 // --- Pin Definitions ---
 // Dispenser Axis
+/*
 #define DISPENSER_STEP_PIN         46
 #define DISPENSER_DIR_PIN          48
 #define DISPENSER_ENABLE_PIN       A8
@@ -31,6 +32,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define DISPENSER_BEAM_PIN         18
 #define DISPENSER_RX               65
 #define DISPENSER_TX               42
+*/
 
 // --- Parameters ---
 #define DISPENSE_SPEED             6
@@ -91,20 +93,10 @@ TMC2209Stepper screwDriver(&SCREW_UART, R_SENSE, 0b00);
 SoftwareSerial WHEEL_UART(WHEEL_RX, WHEEL_TX);
 TMC2209Stepper wheelDriver(&WHEEL_UART, R_SENSE, 0b00);
 
-tipuino::Hal* hal = tipuino::Hal::init();
+// tipuino::Hal* hal = tipuino::Hal::init();
 
 tipuino::Tipuino tipuino_instance(
-  hal,
-  tipuino::HomingStepperMotorDriver(
-    hal,
-    DISPENSER_ENABLE_PIN,
-    DISPENSER_STEP_PIN,
-    DISPENSER_DIR_PIN,
-    DISPENSER_RX,
-    DISPENSER_TX,
-    DISPENSER_LIMIT_SWITCH_PIN,
-    tipuino::PinValue::PinValueLow
-  )
+  tipuino::Hal::init()
 );
 
 

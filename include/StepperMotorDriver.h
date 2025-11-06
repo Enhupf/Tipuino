@@ -26,9 +26,9 @@ namespace tipuino {
     */
     StepperMotorDriver(
       Hal* hal,
-      const pin_t enablePin,
-      const pin_t stepPin,
-      const pin_t dirPin,
+      const pin_t enablePinArg,
+      const pin_t stepPinArg,
+      const pin_t dirPinArg,
       const pin_t uartRx,
       const pin_t uartTx
     );
@@ -55,9 +55,9 @@ namespace tipuino {
     PinValue getDirection() const;
 
     private:
-    PinValue direction;
     SoftwareSerial uart;
     TMC2209Stepper uartDriver;
+    PinValue direction;
     Pin enablePin;
     Pin stepPin;
     Pin dirPin;

@@ -13,16 +13,16 @@ namespace tipuino {
 
   StepperMotorDriver::StepperMotorDriver(
     Hal* hal,
-    const pin_t enablePin,
-    const pin_t stepPin,
-    const pin_t dirPin,
+    const pin_t enablePinArg,
+    const pin_t stepPinArg,
+    const pin_t dirPinArg,
     const pin_t uartRx,
     const pin_t uartTx
   ) : uart(uartRx, uartTx)
     , uartDriver(&uart, R_SENSE, UART_MODE) 
-    , enablePin(hal, enablePin, PinValue::PinValueHigh)
-    , stepPin(hal, stepPin, PinValue::PinValueHigh)
-    , dirPin(hal, dirPin, PinValue::PinValueLow)
+    , enablePin(hal, enablePinArg, PinValue::PinValueHigh)
+    , stepPin(hal, stepPinArg, PinValue::PinValueHigh)
+    , dirPin(hal, dirPinArg, PinValue::PinValueLow)
   {}
 
   void StepperMotorDriver::setup() {

@@ -20,8 +20,7 @@ namespace tipuino {
 
     public:
     Tipuino(
-      Hal* hal,
-      HomingStepperMotorDriver&& dispenserMotorDriver
+      Hal* hal
     );
 
     /**
