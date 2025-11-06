@@ -41,6 +41,8 @@ namespace tipuino {
 
     Pin(const Hal* hal, const pin_t pinNumber);
 
+    void setup();
+
     /**
      * @breif Safely toggle a Pin and ensure it gets reset.
      */
@@ -82,6 +84,7 @@ namespace tipuino {
 
     private:
     const Hal* hal;
+    const PinMode pinMode;
     const pin_t pin;
     PinValue value;
 

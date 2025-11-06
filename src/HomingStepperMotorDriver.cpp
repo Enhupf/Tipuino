@@ -25,6 +25,12 @@ namespace tipuino {
   {
   }
 
+  void HomingStepperMotorDriver::setup() {
+    StepperMotorDriver::setup();
+    delay(20);
+    homePin.setup();
+  }
+
   bool HomingStepperMotorDriver::isHome() {
     return homePin.sync() == PinValue::PinValueLow;
   }

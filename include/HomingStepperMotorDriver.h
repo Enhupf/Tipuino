@@ -45,6 +45,8 @@ namespace tipuino {
      * voltage is set to @see LOW
      */
     bool isHome();
+
+    void setup() override;
   
     /**
      * @breif The main homing routine.

@@ -11,17 +11,31 @@ namespace tipuino {
 
   //Pin
   Pin::Pin(const Hal* hal, const pin_t pinNumber, const PinValue initialValue)
-  : hal(hal), pin(pinNumber), value(initialValue)
-  {
-    hal->setPinMode(pin, PinMode::PinModeOutput);
-    hal->writePin(pin, initialValue);
+  : hal(hal), pinMode(PinMode::PinModeOutput), pin(pinNumber), value(initialValue)  {
   }
 
   Pin::Pin(const Hal* hal, const pin_t pinNumber)
-  : hal(hal), pin(pinNumber)
+  : hal(hal), pinMode(PinMode::PinModeInputPullup), pin(pinNumber)
   {
-    hal->setPinMode(pin, PinMode::PinModeInputPullup);
-    value = hal->readPin(pin);
+  }
+
+  void Pin::setup() {
+    switch(pinMode) {
+      case PinMode::PinModeOutput:
+        hal->setPinMode(pin, PinMode::PinModeOutput);
+        hal->writePin(pin, value);
+        break;
+
+      case PinMode::PinModeInputPullup:
+        hal->setPinMode(pin, PinMode::PinModeInputPullup);
+        value = hal->readPin(pin);
+        break;
+
+      default:
+        // Throw an exception, this will set the system's
+        // state to "Error"
+        break;
+    }
   }
 
   UsePin Pin::use() { return UsePin(this); }
