@@ -38,6 +38,8 @@ namespace tipuino {
     delay(20);
     uart.listen();
     delay(20);
+    uartDriver.begin();
+    delay(20);
     uartDriver.toff(4);
     delay(20);
     uartDriver.rms_current(800);

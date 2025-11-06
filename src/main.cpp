@@ -416,20 +416,22 @@ void setup() {
 
   pinMode(ENCODER_BUTTON_PIN, INPUT_PULLUP);
 
-  /*
-  digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
   digitalWrite(BOX_ENABLE_PIN, HIGH);
-  digitalWrite(SCREW_ENABLE_PIN, HIGH);
-  digitalWrite(WHEEL_ENABLE_PIN, HIGH);
-
-  digitalWrite(DISPENSER_STEP_PIN, LOW);
-  digitalWrite(DISPENSER_DIR_PIN, LOW);
   digitalWrite(BOX_STEP_PIN, LOW);
   digitalWrite(BOX_DIR_PIN, LOW);
+
+  digitalWrite(SCREW_ENABLE_PIN, HIGH);
   digitalWrite(SCREW_STEP_PIN, LOW);
   digitalWrite(SCREW_DIR_PIN, LOW);
+
+  digitalWrite(WHEEL_ENABLE_PIN, HIGH);
   digitalWrite(WHEEL_STEP_PIN, LOW);
   digitalWrite(WHEEL_DIR_PIN, LOW);
+
+  /*
+  digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
+  digitalWrite(DISPENSER_STEP_PIN, LOW);
+  digitalWrite(DISPENSER_DIR_PIN, LOW);
   */
 
     // Dispenser pins
