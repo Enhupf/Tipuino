@@ -49,7 +49,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define BOX_CLEAR_EXTRA_STEPS      170
 #define BOX_WIGGLE                 600
 
-#define WHEEL_SPEED                4.5
+#define WHEEL_SPEED                4.3
 #define WHEEL_CLEAR_EXTRA_STEPS    270
 #define WHEEL_MOVE_PAUSE_MS        1000
 #define WHEEL_WIGGLE               150
@@ -244,9 +244,6 @@ void wait() {
 
   void moveWheelToNextClearPosition() {
     digitalWrite(WHEEL_ENABLE_PIN, LOW);
-    digitalWrite(WHEEL_DIR_PIN, HIGH);
-    for (int i = 0; i < WHEEL_WIGGLE; i++) stepWheelMotor();
-    digitalWrite(WHEEL_DIR_PIN, LOW);
 
     unsigned long startWheelMove = millis();
     while (millis() - startWheelMove < WHEEL_BEAM_TIMEOUT_MS) {
@@ -254,6 +251,10 @@ void wait() {
       delay(DEBOUNCE_DELAY);
       while (digitalRead(WHEEL_ENCODER_PIN) == LOW) stepWheelMotor();
       for (int i = 0; i < WHEEL_CLEAR_EXTRA_STEPS; i++) stepWheelMotor();
+      delay(50);
+      digitalWrite(WHEEL_DIR_PIN, HIGH);
+      for (int i = 0; i < WHEEL_WIGGLE; i++) stepWheelMotor();
+      digitalWrite(WHEEL_DIR_PIN, LOW);
       delay(WHEEL_MOVE_PAUSE_MS);
       return;
     }
