@@ -35,10 +35,10 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 */
 
 // --- Parameters ---
-#define DISPENSE_SPEED             6
+#define DISPENSE_SPEED             7.5
 #define DISPENSE_PAUSE_MS          600
 #define MAX_DISPENSE_CYCLES        8
-#define DISPENSER_WIGGLE           450
+#define DISPENSER_WIGGLE           250
 #define FINAL_HOMING_DELAY_MS      1000
 #define DISPENSER_CLEAR_STEPS      350
 
@@ -49,10 +49,10 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define BOX_CLEAR_EXTRA_STEPS      170
 #define BOX_WIGGLE                 600
 
-#define WHEEL_SPEED                4.3
+#define WHEEL_SPEED                5
 #define WHEEL_CLEAR_EXTRA_STEPS    270
 #define WHEEL_MOVE_PAUSE_MS        1000
-#define WHEEL_WIGGLE               150
+#define WHEEL_WIGGLE               30
 
 #define DEBOUNCE_DELAY             50
 #define DISPENSER_BEAM_TIMEOUT_MS  1000
@@ -74,6 +74,7 @@ void stepDispenser();
 void stepWheelMotor();
 void stepBoxMotor();
 void stepScrewMotor();
+void stepWheelMotorSlow();
 
 //finish melody set-up
 int tempo = 120; // beats per minute
@@ -247,9 +248,9 @@ void wait() {
 
     unsigned long startWheelMove = millis();
     while (millis() - startWheelMove < WHEEL_BEAM_TIMEOUT_MS) {
-      while (digitalRead(WHEEL_ENCODER_PIN) == HIGH) stepWheelMotor();
+      while (digitalRead(WHEEL_ENCODER_PIN) == HIGH) stepWheelMotorSlow();
       delay(DEBOUNCE_DELAY);
-      while (digitalRead(WHEEL_ENCODER_PIN) == LOW) stepWheelMotor();
+      while (digitalRead(WHEEL_ENCODER_PIN) == LOW) stepWheelMotorSlow();
       for (int i = 0; i < WHEEL_CLEAR_EXTRA_STEPS; i++) stepWheelMotor();
       delay(50);
       digitalWrite(WHEEL_DIR_PIN, HIGH);
@@ -287,6 +288,13 @@ void wait() {
     delayMicroseconds(10);
     digitalWrite(WHEEL_STEP_PIN, LOW);
     delayMicroseconds(1000 / WHEEL_SPEED);
+  }
+
+  void stepWheelMotorSlow() {
+    digitalWrite(WHEEL_STEP_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(WHEEL_STEP_PIN, LOW);
+    delayMicroseconds(3000 / WHEEL_SPEED);
   }
 
   void wiggle_dispenser() {
