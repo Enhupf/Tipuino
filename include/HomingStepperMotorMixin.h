@@ -13,30 +13,23 @@ namespace tipuino {
    * In the physical world, there is a physical swithc that will
    * produce a signal if the stepper motor reaches the home position.
   */
-  class HomingStepperMotorDriver : public StepperMotorDriver {
+  class HomingStepperMotorMixin {
 
     public:
-    /** @breif Main constructor of the homing motor driver.
+    /**
+     * @breif Values that must be supplied to use the mixin.
      *
-     * @param
-     * @param
-     * @param
-     * @param
-     * @param
-     * @param
-     * @param The pin that produces the signal indicating that the motor is "homed".
-     * @param The direction that the stepper motor needs to move in order to "home" itself.
-    */
-    HomingStepperMotorDriver(
-      Hal* hal,
-      const pin_t enablePin,
-      const pin_t stepPin,
-      const pin_t dirPin,
-      const pin_t uartRx,
-      const pin_t uartTx,
-      const pin_t homePin,
-      const PinValue homeDirection
-    );
+     * @param stepperMotor The motor which can be homed.
+     * @param homePin The pin which produces the signal indicating the motor is homed.
+     * @param homeDirection The direction the motor must move to reach the "home" poisiton
+     */
+    struct Interface {
+        StepperMotorDriver* stepperMotor;
+        Pin& homePin;
+        const PinValue& homeDirection;
+    } Interface;
+
+    HomingStepperMotorMixin() {}
 
     /**
      * @breif Check if the stepper motor is "homed"
@@ -46,8 +39,6 @@ namespace tipuino {
      */
     bool isHome();
 
-    void setup() override;
-  
     /**
      * @breif The main homing routine.
      *
@@ -56,10 +47,9 @@ namespace tipuino {
      * sensor.
      */
     void homeMotor();
-  
-    private:
-    Pin homePin;
-    const PinValue homeDirection;
+
+    protected:
+    virtual Interface& interface() = 0;
   };
 }
 
