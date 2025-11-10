@@ -1,4 +1,4 @@
-#include "HomingStepperMotorDriver.h"
+#include "HomingStepperMotorMixin.h"
 
 #include "platform.h"
 #include "TipuinoError.h"
@@ -10,22 +10,28 @@ namespace tipuino {
    */
   #define HOMING_LIMIT 100
 
-  bool HomingStepperMotorDriver::isHome() {
-    auto& self = interface();
-    return self.homePin.sync() == PinValue::PinValueLow;
+  bool HomingStepperMotorMixin::isHome() {
+    return interface().homePin.sync() == PinValue::PinValueLow;
   }
 
-  void HomingStepperMotorDriver::homeMotor() {
+  void HomingStepperMotorMixin::homeMotor() {
+
+    auto& mixin = interface();
+    auto* stepperMotor = mixin.stepperMotor;
+    stepperMotor->setDirection(mixin.homeDirection);
     int count = 0;
-    auto& self = interface();
-    
-    while(!isHome()) {
+    auto test = [this, &count] {
+      count++;
+      return !(count > HOMING_LIMIT || isHome());
+    };
 
-      if (++count > HOMING_LIMIT) {
-        throw TipuinoError::TipuinoError;
-      }
-      self.stepperMotor->step();
+    if(count > HOMING_LIMIT) {
+      // Stepper motor was unable to find its
+      // home. Report error.
+
+      throw TipuinoError::TipuinoError;
     }
-  }
 
+    stepperMotor->stepWhile(test, 0);
+  }
 }

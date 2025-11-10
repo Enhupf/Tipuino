@@ -1,5 +1,9 @@
 #include "DispenserMotorDriver.h"
 
+#include "platform.h"
+
+#define DISPENSER_CLEAR_STEPS 350
+
 namespace tipuino {
 
   DispenserMotorDriver::DispenserMotorDriver(
@@ -13,10 +17,9 @@ namespace tipuino {
     const PinValue homeDirection
   ) : StepperMotorDriver(hal, enablePinArg, stepPinArg, dirPinArg, uartRx, uartTx)
     , HomingStepperMotorMixin()
-    , homePin(homePinArg)
+    , homePin(hal, homePinArg)
     , homeDirection(homeDirection)
-    , homingInterface(this, homePin, homeDirection)
-    , 
+    , homingInterface { this, homePin, homeDirection }
   { }
 
   void DispenserMotorDriver::setup() {
@@ -24,7 +27,22 @@ namespace tipuino {
     StepperMotorDriver::setup();
   }
 
-  HomingStepperMotorMixin::Interface& interface() {
+  HomingStepperMotorMixin::Interface& DispenserMotorDriver::interface() {
     return homingInterface;
+  }
+
+  void DispenserMotorDriver::homeMotor() {
+    HomingStepperMotorMixin::homeMotor();
+
+    int count = 0;
+    auto clearMotor = [this, &count] {
+
+      if(count == 0 && homePin.sync() == PinValue::PinValueLow) {
+        return true;
+      }
+      return count++ < DISPENSER_CLEAR_STEPS;
+    };
+    setDirection(inv(homeDirection));
+    stepWhile(clearMotor, 0);
   }
 }

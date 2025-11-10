@@ -21,19 +21,6 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(3, NEOPIXEL_PIN, NEO_GRB);
 U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, LCD_RS, LCD_RESET);
 
-// --- Pin Definitions ---
-// Dispenser Axis
-/*
-#define DISPENSER_STEP_PIN         46
-#define DISPENSER_DIR_PIN          48
-#define DISPENSER_ENABLE_PIN       A8
-#define DISPENSER_LIMIT_SWITCH_PIN 21
-#define DISPENSER_END_SWITCH_PIN   39
-#define DISPENSER_BEAM_PIN         18
-#define DISPENSER_RX               65
-#define DISPENSER_TX               42
-*/
-
 // --- Parameters ---
 #define DISPENSE_SPEED             7.5
 #define DISPENSE_PAUSE_MS          600
@@ -391,15 +378,9 @@ void setup() {
     delay(10);
   }
 
-  // Dispenser
-  /*
-  pinMode(DISPENSER_STEP_PIN, OUTPUT);
-  pinMode(DISPENSER_DIR_PIN, OUTPUT);
-  pinMode(DISPENSER_ENABLE_PIN, OUTPUT);
-  pinMode(DISPENSER_LIMIT_SWITCH_PIN, INPUT_PULLUP);
-  */
   tipuino_instance.setup();
 
+  // Dispenser
   pinMode(DISPENSER_END_SWITCH_PIN, INPUT_PULLUP);
   pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
 
@@ -443,14 +424,6 @@ void setup() {
   digitalWrite(DISPENSER_DIR_PIN, LOW);
   */
 
-    // Dispenser pins
-    // pinMode(DISPENSER_STEP_PIN, OUTPUT);
-    // pinMode(DISPENSER_DIR_PIN, OUTPUT);
-    // pinMode(DISPENSER_ENABLE_PIN, OUTPUT);
-    // pinMode(DISPENSER_LIMIT_SWITCH_PIN, INPUT_PULLUP);
-    pinMode(DISPENSER_END_SWITCH_PIN, INPUT_PULLUP);
-    pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
-
     // Box pins
     pinMode(BOX_STEP_PIN, OUTPUT);
     pinMode(BOX_DIR_PIN, OUTPUT);
@@ -479,25 +452,6 @@ void setup() {
     delay(20);
     WHEEL_UART.begin(57600);
     delay(20);
-
-    /*
-    DISPENSER_UART.listen();
-    delay(20);
-    dispenserDriver.begin();     // init driver
-    delay(20);
-    dispenserDriver.toff(4);     // enable driver
-    delay(20);
-    dispenserDriver.rms_current(800); // motor RMS current in mA
-    delay(20);
-    dispenserDriver.microsteps(MICROSTEPS);   // microstepping
-    delay(20);
-    dispenserDriver.pwm_autoscale(true); // stealthChop
-    delay(20);
-    dispenserDriver.pdn_disable(true); // use PDN/UART pin
-    delay(20);
-    dispenserDriver.I_scale_analog(false); // use internal current reference
-    delay(50);
-    */
 
     BOX_UART.listen();
     delay(20);
@@ -550,7 +504,6 @@ void setup() {
     wheelDriver.I_scale_analog(false); // use internal current reference
 
     digitalWrite(SCREW_ENABLE_PIN, HIGH);
-    // digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
     digitalWrite(BOX_ENABLE_PIN, HIGH);
     digitalWrite(WHEEL_ENABLE_PIN, HIGH);
 

@@ -31,8 +31,19 @@ namespace tipuino {
 
     void setup() override;
 
+    /**
+     * @breif Home the dispenser motor
+     *
+     * This method homes the dispenser motor. First it uses
+     * the @ref HomingStepperMotorMixing::home() method to
+     * do the initial homing. It then moves the stepper in
+     * the opposite direction until the homing sensor no
+     * longer triggers and some clearance is available.
+     */
+    void homeMotor() override;
+
     protected:
-    HomingStepperMotorMixing::Interface& interface() override;
+    HomingStepperMotorMixin::Interface& interface() override;
 
     private:
     Pin homePin;

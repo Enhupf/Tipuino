@@ -6,7 +6,6 @@
 #define UART_MODE 0B00
 #define UART_BAUD_RATE 57600
 #define STEP_DELAY 10
-#define STEP_SPEED_DELAY 300
 #define STEPPER_MICROSTEPS 16
 
 namespace tipuino {
@@ -58,16 +57,18 @@ namespace tipuino {
     return dirPin.getValue();
   }
 
+  void StepperMotorDriver::setDirection(const PinValue dir) {
+    dirPin.write(dir);
+  }
+
   void StepperMotorDriver::step() {
 
     auto useEnable = enablePin.use();
-    {
-      auto useStep = stepPin.use();
-      delayMicroseconds(STEP_DELAY);
-    }
-
-    // Todo, can we use UART to know when the step
-    // is done?
-    delayMicroseconds(STEP_SPEED_DELAY);
+    stepInternal();
   }
+
+  void StepperMotorDriver::stepInternal() {
+    auto useStep = stepPin.use();
+    delayMicroseconds(STEP_DELAY);
+  };
 };

@@ -38,6 +38,19 @@ namespace tipuino {
      */
     void step();
 
+    template<typename F>
+    void stepWhile(F&& f, int stepDelay) {
+
+      auto useEnable = enablePin.use();
+      while(f()) {
+        stepInternal();
+
+        if(stepDelay > 0) {
+          delayMicroseconds(stepDelay);
+        }
+      }
+    }
+
     /**
      * @breif Function called to initialize the system
      */
@@ -61,6 +74,8 @@ namespace tipuino {
     Pin enablePin;
     Pin stepPin;
     Pin dirPin;
+
+    void stepInternal();
   };
 }
 

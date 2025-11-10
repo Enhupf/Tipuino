@@ -11,7 +11,7 @@ namespace tipuino {
   enum class PinMode : uint8_t;
   using pin_t = uint8_t;
 
-  inline PinValue inv(const PinValue value);
+  PinValue inv(const PinValue value);
 
   class UsePin final {
 

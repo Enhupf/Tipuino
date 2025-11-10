@@ -62,11 +62,6 @@ namespace tipuino {
     PinModeOutput = OUTPUT
   , PinModeInputPullup = INPUT_PULLUP
   };
-  
-  inline PinValue inv(const PinValue value) {
-  
-    return value == PinValue::PinValueLow ? PinValue::PinValueHigh : PinValue::PinValueLow;
-  }
 }
 
 #endif

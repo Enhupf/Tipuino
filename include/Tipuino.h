@@ -1,7 +1,7 @@
 #ifndef TIPUINO_H
 #define TIPUINO_H
 
-#include "HomingStepperMotorDriver.h"
+#include "DispenserMotorDriver.h"
 
 namespace tipuino {
 
@@ -36,7 +36,7 @@ namespace tipuino {
     private:
     const Hal* hal;
     TipuinoState state;
-    HomingStepperMotorDriver dispenserMotorDriver;
+    DispenserMotorDriver dispenserMotorDriver;
 
     /**
      * @breif The main initialization method.

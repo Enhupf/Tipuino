@@ -27,7 +27,7 @@ namespace tipuino {
         StepperMotorDriver* stepperMotor;
         Pin& homePin;
         const PinValue& homeDirection;
-    } Interface;
+    };
 
     HomingStepperMotorMixin() {}
 
@@ -46,7 +46,7 @@ namespace tipuino {
      * unitl it reaches the "home" state as established by it's accompanying
      * sensor.
      */
-    void homeMotor();
+    virtual void homeMotor();
 
     protected:
     virtual Interface& interface() = 0;
