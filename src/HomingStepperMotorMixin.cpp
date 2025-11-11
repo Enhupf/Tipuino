@@ -25,13 +25,13 @@ namespace tipuino {
       return !(count > HOMING_LIMIT || isHome());
     };
 
-    if(count > HOMING_LIMIT) {
-      // Stepper motor was unable to find its
-      // home. Report error.
-
-      throw TipuinoError::TipuinoError;
-    }
-
     stepperMotor->stepWhile(test, 0);
+
+    if(count > HOMING_LIMIT) {
+      setError(
+        TipuinoError::StepperMotorError,
+        "Unable to home stepper motor."
+      );
+    }
   }
 }

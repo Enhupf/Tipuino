@@ -31,17 +31,6 @@ namespace tipuino {
 
     void setup() override;
 
-    /**
-     * @breif Home the dispenser motor
-     *
-     * This method homes the dispenser motor. First it uses
-     * the @ref HomingStepperMotorMixing::home() method to
-     * do the initial homing. It then moves the stepper in
-     * the opposite direction until the homing sensor no
-     * longer triggers and some clearance is available.
-     */
-    void homeMotor() override;
-
     protected:
     HomingStepperMotorMixin::Interface& interface() override;
 
@@ -49,6 +38,15 @@ namespace tipuino {
     Pin homePin;
     const PinValue homeDirection;
     HomingStepperMotorMixin::Interface homingInterface;
+
+    /**
+     * @breif Add clereance after homing the motor.
+     *
+     * This method is to be called only when the dispenser motor
+     * is homed. It will create the necessary clearance for the
+     * motor to start operating after homing.
+     */
+    void addClearance();
   };
 }
 

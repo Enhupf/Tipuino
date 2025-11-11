@@ -1,6 +1,7 @@
 #include "DispenserMotorDriver.h"
 
 #include "platform.h"
+#include "TipuinoError.h"
 
 #define DISPENSER_CLEAR_STEPS 350
 
@@ -25,14 +26,23 @@ namespace tipuino {
   void DispenserMotorDriver::setup() {
     homePin.setup();
     StepperMotorDriver::setup();
+    homeMotor();
+    addClearance();
   }
 
   HomingStepperMotorMixin::Interface& DispenserMotorDriver::interface() {
     return homingInterface;
   }
 
-  void DispenserMotorDriver::homeMotor() {
-    HomingStepperMotorMixin::homeMotor();
+  void DispenserMotorDriver::addClearance() {
+
+    if(!isHome()) {
+      setError(
+        TipuinoError::InvalidOperationError,
+        "Attempted to add clearance without homing the stepepr motor."
+      );
+      return;
+    }
 
     int count = 0;
     auto clearMotor = [this, &count] {

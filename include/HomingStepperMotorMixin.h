@@ -46,7 +46,7 @@ namespace tipuino {
      * unitl it reaches the "home" state as established by it's accompanying
      * sensor.
      */
-    virtual void homeMotor();
+    void homeMotor();
 
     protected:
     virtual Interface& interface() = 0;

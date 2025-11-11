@@ -509,6 +509,7 @@ void setup() {
 
     //startBeep();
   
+    /*
     u8g2_lcd.firstPage();
       do {
         u8g2_lcd.setFont(u8g2_font_6x12_tr);
@@ -518,6 +519,7 @@ void setup() {
         } while ( u8g2_lcd.nextPage() );
       homeDispenserMotor();
     dispenserHomed = true;
+    */
     u8g2_lcd.firstPage();
       do {
         u8g2_lcd.setFont(u8g2_font_6x12_tr);

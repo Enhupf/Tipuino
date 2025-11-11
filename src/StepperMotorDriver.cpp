@@ -62,7 +62,6 @@ namespace tipuino {
   }
 
   void StepperMotorDriver::step() {
-
     auto useEnable = enablePin.use();
     stepInternal();
   }

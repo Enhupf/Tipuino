@@ -127,6 +127,12 @@ namespace tipuino {
      */
     virtual void setPinMode(const pin_t pin, const PinMode mode) const = 0;
 
+    /*
+    virtual void raiseError(cosnt int code, const char* error) = 0;
+
+    virtual const int getErrorStatus() const = 0;
+    */
+
     /**
      * @breif Initialize the Hardware Abstraction Layer (HAL)
      *
