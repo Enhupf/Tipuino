@@ -15,8 +15,7 @@ namespace tipuino {
         DISPENSER_DIR_PIN,
         DISPENSER_RX,
         DISPENSER_TX,
-        DISPENSER_LIMIT_SWITCH_PIN,
-        tipuino::PinValue::PinValueLow
+        DISPENSER_LIMIT_SWITCH_PIN
       )
   {}
 

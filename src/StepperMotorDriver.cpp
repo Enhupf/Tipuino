@@ -20,7 +20,7 @@ namespace tipuino {
   ) : uart(uartRx, uartTx)
     , uartDriver(&uart, R_SENSE, UART_MODE) 
     , enablePin(hal, enablePinArg, PinValue::PinValueHigh)
-    , stepPin(hal, stepPinArg, PinValue::PinValueHigh)
+    , stepPin(hal, stepPinArg, PinValue::PinValueLow)
     , dirPin(hal, dirPinArg, PinValue::PinValueLow)
   {}
 

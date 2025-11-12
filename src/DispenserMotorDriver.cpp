@@ -7,6 +7,8 @@
 
 namespace tipuino {
 
+  const PinValue dispenserHomeDirection = PinValue::PinValueHigh;
+
   DispenserMotorDriver::DispenserMotorDriver(
     Hal* hal,
     const pin_t enablePinArg,
@@ -14,13 +16,11 @@ namespace tipuino {
     const pin_t dirPinArg,
     const pin_t uartRx,
     const pin_t uartTx,
-    const pin_t homePinArg,
-    const PinValue homeDirection
+    const pin_t homePinArg
   ) : StepperMotorDriver(hal, enablePinArg, stepPinArg, dirPinArg, uartRx, uartTx)
     , HomingStepperMotorMixin()
     , homePin(hal, homePinArg)
-    , homeDirection(homeDirection)
-    , homingInterface { this, homePin, homeDirection }
+    , homingInterface { this, homePin, dispenserHomeDirection }
   { }
 
   void DispenserMotorDriver::setup() {
@@ -52,7 +52,7 @@ namespace tipuino {
       }
       return count++ < DISPENSER_CLEAR_STEPS;
     };
-    setDirection(inv(homeDirection));
+    setDirection(inv(dispenserHomeDirection));
     stepWhile(clearMotor, 0);
   }
 }

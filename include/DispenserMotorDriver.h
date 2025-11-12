@@ -25,8 +25,7 @@ namespace tipuino {
       const pin_t dirPinArg,
       const pin_t uartRx,
       const pin_t uartTx,
-      const pin_t homePin,
-      const PinValue homeDirection
+      const pin_t homePin
     );
 
     void setup() override;
@@ -36,7 +35,6 @@ namespace tipuino {
 
     private:
     Pin homePin;
-    const PinValue homeDirection;
     HomingStepperMotorMixin::Interface homingInterface;
 
     /**
