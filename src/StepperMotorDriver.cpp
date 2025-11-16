@@ -67,7 +67,9 @@ namespace tipuino {
   }
 
   void StepperMotorDriver::stepInternal() {
-    auto useStep = stepPin.use();
+    //auto useStep = stepPin.use();
+    stepPin.write(PinValue::PinValueHigh);
     delayMicroseconds(STEP_DELAY);
+    stepPin.write(PinValue::PinValueLow);
   };
 };

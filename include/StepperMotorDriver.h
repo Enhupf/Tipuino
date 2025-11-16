@@ -5,6 +5,8 @@
 
 #include "Hal.h"
 
+#include "platform.h"
+
 namespace tipuino {
 
   //! Represents a stepper motor along with supporting sensors 
@@ -41,7 +43,8 @@ namespace tipuino {
     template<typename F>
     void stepWhile(F&& f, int stepDelay) {
 
-      auto useEnable = enablePin.use();
+      // auto useEnable = enablePin.use();
+      enablePin.write(PinValue::PinValueLow);
       while(f()) {
         stepInternal();
 
@@ -49,6 +52,7 @@ namespace tipuino {
           delayMicroseconds(stepDelay);
         }
       }
+      enablePin.write(PinValue::PinValueHigh);
     }
 
     /**
