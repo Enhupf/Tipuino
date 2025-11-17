@@ -74,7 +74,6 @@ namespace tipuino {
     private:
     SoftwareSerial uart;
     TMC2209Stepper uartDriver;
-    PinValue direction;
     Pin enablePin;
     Pin stepPin;
     Pin dirPin;

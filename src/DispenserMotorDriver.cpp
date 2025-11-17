@@ -16,16 +16,20 @@ namespace tipuino {
     const pin_t dirPinArg,
     const pin_t uartRx,
     const pin_t uartTx,
-    const pin_t homePinArg
+    const pin_t homePinArg,
+    const pin_t beamPinArg
   ) : StepperMotorDriver(hal, enablePinArg, stepPinArg, dirPinArg, uartRx, uartTx)
     , HomingStepperMotorMixin()
     , homePin(hal, homePinArg)
+    , beamPin(hal, beamPinArg)
     , homingInterface { this, homePin, dispenserHomeDirection }
   { }
 
   void DispenserMotorDriver::setup() {
     homePin.setup();
+    beamPin.setup();
     StepperMotorDriver::setup();
+
     homeMotor();
     addClearance();
   }
@@ -47,7 +51,7 @@ namespace tipuino {
     int count = 0;
     auto clearMotor = [this, &count] {
 
-      if(count == 0 && homePin.sync() == PinValue::PinValueLow) {
+      if(count == 0 && beamPin.sync() == PinValue::PinValueLow) {
         return true;
       }
       return count++ < DISPENSER_CLEAR_STEPS;

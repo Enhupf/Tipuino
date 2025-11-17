@@ -382,7 +382,7 @@ void setup() {
 
   // Dispenser
   pinMode(DISPENSER_END_SWITCH_PIN, INPUT_PULLUP);
-  pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
+  // pinMode(DISPENSER_BEAM_PIN, INPUT_PULLUP);
 
   // Box
   pinMode(BOX_STEP_PIN, OUTPUT);
