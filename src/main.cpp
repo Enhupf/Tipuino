@@ -46,8 +46,8 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define SCREW_SPEED                3
 
 #define BOX_SPEED                  5
-#define BOX_CLEAR_EXTRA_STEPS      170
-#define BOX_WIGGLE                 600
+#define BOX_CLEAR_EXTRA_STEPS      210
+#define BOX_WIGGLE                 560
 
 #define WHEEL_SPEED                5
 #define WHEEL_CLEAR_EXTRA_STEPS    270
@@ -318,7 +318,7 @@ void wait() {
       digitalWrite(BOX_ENABLE_PIN, LOW);
       digitalWrite(BOX_DIR_PIN, HIGH);
       digitalWrite(DISPENSER_DIR_PIN, HIGH);
-      for (int i = 0; i < 290; i++){
+      for (int i = 0; i < 270; i++){
         stepDispenser(); stepDispenser();
         stepBoxMotor();
         stepDispenser(); stepDispenser();
@@ -326,13 +326,13 @@ void wait() {
         stepDispenser();}
       delay(50);
       digitalWrite(BOX_DIR_PIN, LOW);
-      for (int i = 0; i < 390; i++) stepBoxMotor();
+      for (int i = 0; i < 350; i++) stepBoxMotor();
       delay(50);
       digitalWrite(DISPENSER_DIR_PIN, HIGH);
-      for (int i = 0; i < 1000; i++) stepDispenser();
+      for (int i = 0; i < 1200; i++) stepDispenser();
       delay(50);
       digitalWrite(DISPENSER_DIR_PIN, LOW);
-      for (int i = 0; i < 1000; i++) stepDispenser();
+      for (int i = 0; i < 1200; i++) stepDispenser();
       delay(50);
       digitalWrite(BOX_ENABLE_PIN, HIGH);
       digitalWrite(BOX_DIR_PIN, HIGH);
