@@ -230,23 +230,65 @@ void wait() {
     digitalWrite(BOX_ENABLE_PIN, HIGH);
   }
 
-  void moveWheelToNextClearPosition() {
-    digitalWrite(WHEEL_ENABLE_PIN, LOW);
+  bool tryMoveWheelToNextClearPosition() {
 
     unsigned long startWheelMove = millis();
-    while (millis() - startWheelMove < WHEEL_BEAM_TIMEOUT_MS) {
-      while (digitalRead(WHEEL_ENCODER_PIN) == HIGH) stepWheelMotorSlow();
-      delay(DEBOUNCE_DELAY);
-      while (digitalRead(WHEEL_ENCODER_PIN) == LOW) stepWheelMotorSlow();
-      for (int i = 0; i < WHEEL_CLEAR_EXTRA_STEPS; i++) stepWheelMotor();
-      delay(50);
-      digitalWrite(WHEEL_DIR_PIN, HIGH);
-      for (int i = 0; i < WHEEL_WIGGLE; i++) stepWheelMotor();
-      digitalWrite(WHEEL_DIR_PIN, LOW);
-      delay(WHEEL_MOVE_PAUSE_MS);
-      return;
+    auto hasTimedOut =
+      [&startWheelMove]{
+        return millis() - startWheelMove > WHEEL_BEAM_TIMEOUT_MS;
+      };
+    bool success = true;
+
+    digitalWrite(WHEEL_ENABLE_PIN, LOW);
+    digitalWrite(WHEEL_DIR_PIN, LOW);
+
+    while (success && digitalRead(WHEEL_ENCODER_PIN) == HIGH) {
+      if(hasTimedOut()) {
+        success = false;
+      }
+      stepWheelMotorSlow();
+    };
+    delay(DEBOUNCE_DELAY);
+
+    while (success && digitalRead(WHEEL_ENCODER_PIN) == LOW){
+      if(hasTimedOut()) {
+        success = false;
+      }
+      stepWheelMotorSlow();
     }
+    
+    for (int i = 0; success && i < WHEEL_CLEAR_EXTRA_STEPS; i++) {
+      stepWheelMotor();
+    }
+    delay(50);
+    digitalWrite(WHEEL_DIR_PIN, HIGH);
+
+    for (int i = 0; success && i < WHEEL_WIGGLE; i++) {
+      stepWheelMotor();
+    }
+    digitalWrite(WHEEL_DIR_PIN, LOW);
+    delay(WHEEL_MOVE_PAUSE_MS);
+
     digitalWrite(WHEEL_ENABLE_PIN, HIGH);
+    return success;
+  }
+
+  void moveWheelToNextClearPosition() {
+
+    // Attemtp this 10 times
+    for(int i = 0; i < 10; i++) {
+      if(tryMoveWheelToNextClearPosition()) {
+        return;
+      }
+
+      // Operation failed, move the wheel backwards
+      // a few steps and try again
+      digitalWrite(WHEEL_ENABLE_PIN, LOW);
+      digitalWrite(WHEEL_DIR_PIN, HIGH);
+      for(int i = 0; i < WHEEL_CLEAR_EXTRA_STEPS; i++) {
+        stepWheelMotor();
+      }
+    }
   }
 
   void stepDispenser() {
