@@ -40,6 +40,7 @@ namespace tipuino {
 
   void DispenserMotorDriver::addClearance() {
 
+    /*
     if(!isHome()) {
       setError(
         TipuinoError::InvalidOperationError,
@@ -47,6 +48,7 @@ namespace tipuino {
       );
       return;
     }
+    */
 
     int count = 0;
     auto clearMotor = [this, &count] {

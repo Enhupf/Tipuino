@@ -71,5 +71,6 @@ namespace tipuino {
     stepPin.write(PinValue::PinValueHigh);
     delayMicroseconds(STEP_DELAY);
     stepPin.write(PinValue::PinValueLow);
+    delayMicroseconds(1200 / 7); 
   };
 };

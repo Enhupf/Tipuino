@@ -8,7 +8,7 @@ namespace tipuino {
   /**
    * @breif The number of times the homing routine will run before erroing out.
    */
-  #define HOMING_LIMIT 10000
+  #define HOMING_LIMIT 1000000
 
   bool HomingStepperMotorMixin::isHome() {
     return interface().homePin.sync() == PinValue::PinValueLow;
