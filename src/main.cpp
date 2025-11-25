@@ -44,6 +44,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define DEBOUNCE_DELAY             50
 #define DISPENSER_BEAM_TIMEOUT_MS  1000
 #define WHEEL_BEAM_TIMEOUT_MS      500
+#define WHEEL_MOVE_TIMEOUT_MS      1000
 
 #define R_SENSE 0.11f
 
@@ -235,7 +236,7 @@ void wait() {
     unsigned long startWheelMove = millis();
     auto hasTimedOut =
       [&startWheelMove]{
-        return millis() - startWheelMove > WHEEL_BEAM_TIMEOUT_MS;
+        return millis() - startWheelMove > WHEEL_MOVE_TIMEOUT_MS;
       };
     bool success = true;
 
@@ -286,7 +287,7 @@ void wait() {
       digitalWrite(WHEEL_ENABLE_PIN, LOW);
       digitalWrite(WHEEL_DIR_PIN, HIGH);
       for(int i = 0; i < WHEEL_CLEAR_EXTRA_STEPS; i++) {
-        stepWheelMotor();
+        stepWheelMotorSlow();
       }
     }
   }
