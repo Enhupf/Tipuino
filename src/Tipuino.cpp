@@ -5,7 +5,8 @@
 namespace tipuino {
 
   Tipuino::Tipuino(
-    Hal* hal
+    Hal* hal,
+    const ErrorHandler::OnError* onError
   ) : hal(hal)
     , state(Initializing)
     , dispenserMotorDriver(
@@ -18,6 +19,7 @@ namespace tipuino {
         DISPENSER_LIMIT_SWITCH_PIN,
         DISPENSER_BEAM_PIN
       )
+    , errorHandlerInternal(onError)
   {}
 
   void Tipuino::setup() {

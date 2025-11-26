@@ -2,6 +2,7 @@
 #define TIPUINO_H
 
 #include "DispenserMotorDriver.h"
+#include "ErrorHandler.h"
 
 namespace tipuino {
 
@@ -20,7 +21,8 @@ namespace tipuino {
 
     public:
     Tipuino(
-      Hal* hal
+      Hal* hal,
+      const ErrorHandler::OnError* onError
     );
 
     /**
@@ -32,11 +34,13 @@ namespace tipuino {
      */
     void run();
     void setup();
+    ErrorHandler& errorHandler() { return errorHandlerInternal; }
 
     private:
     const Hal* hal;
     TipuinoState state;
     DispenserMotorDriver dispenserMotorDriver;
+    ErrorHandler errorHandlerInternal;
 
     /**
      * @breif The main initialization method.

@@ -9,8 +9,10 @@ namespace tipuino {
 
   enum class TipuinoError : uint8_t {
     NoError = 0
-  , StepperMotorError = 1
-  , InvalidOperationError = 2
+  , ErrorCodeNotSet = 1
+  , StepperMotorError = 2
+  , InvalidOperationError = 3
+  , UnableToMoveWheelToClearPosition = 4
   };
 
   void setError(

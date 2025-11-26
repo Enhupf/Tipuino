@@ -64,6 +64,8 @@ void stepBoxMotor();
 void stepScrewMotor();
 void stepWheelMotorSlow();
 
+using TipuinoError = tipuino::TipuinoError;
+
 //finish melody set-up
 int tempo = 120; // beats per minute
 int wholeNote = (60000 * 4) / tempo; // length of a whole note in ms
@@ -82,10 +84,38 @@ TMC2209Stepper screwDriver(&SCREW_UART, R_SENSE, 0b00);
 SoftwareSerial WHEEL_UART(WHEEL_RX, WHEEL_TX);
 TMC2209Stepper wheelDriver(&WHEEL_UART, R_SENSE, 0b00);
 
-// tipuino::Hal* hal = tipuino::Hal::init();
+// Encoder using ClickEncoder
+ClickEncoder encoder(ENCODER_A_PIN, ENCODER_B_PIN, ENCODER_BUTTON_PIN, 4);
+int menuSelection = 0; // 0 = 1 box, 1 = 2 boxes
+
+class U8g2EOnError : public tipuino::ErrorHandler::OnError {
+
+  public:
+  bool handle(TipuinoError error) const override {
+
+    char buffer[200];
+    sprintf(
+      buffer,
+      "Error occured, code [%i]. Consult manual, resolve and continue",
+      static_cast<int>(error)
+    );
+    do {
+
+      u8g2_lcd.setFont(u8g2_font_6x12_tr);
+      u8g2_lcd.setCursor(0, 12);
+      u8g2_lcd.print(buffer);
+    } while (u8g2_lcd.nextPage());
+
+    while(encoder.getButton() != ClickEncoder::Clicked);
+    return true;
+  }
+};
+
+U8g2EOnError errorHandler;
 
 tipuino::Tipuino tipuino_instance(
-  tipuino::Hal::init()
+  tipuino::Hal::init(),
+  &errorHandler
 );
 
 
@@ -96,10 +126,6 @@ int cycle = 0;
 int BOX_MOVES = 12; // default, updated from menu
 int boxesSelected = 1; // 1 or 2, set by menu
 #define MICROSTEPS 16
-
-// Encoder using ClickEncoder
-ClickEncoder encoder(ENCODER_A_PIN, ENCODER_B_PIN, ENCODER_BUTTON_PIN, 4);
-int menuSelection = 0; // 0 = 1 box, 1 = 2 boxes
 
 void timerIsr() {
   encoder.service();
@@ -276,20 +302,26 @@ void wait() {
 
   void moveWheelToNextClearPosition() {
 
-    // Attemtp this 10 times
-    for(int i = 0; i < 10; i++) {
-      if(tryMoveWheelToNextClearPosition()) {
-        return;
-      }
+    auto action = [](TipuinoError& result){
+      // Attemtp this 10 times
+      result = TipuinoError::UnableToMoveWheelToClearPosition;
+      for(int i = 0; i < 1; i++) {
+        if(tryMoveWheelToNextClearPosition()) {
+          result = TipuinoError::NoError;
+          return;
+        }
 
-      // Operation failed, move the wheel backwards
-      // a few steps and try again
-      digitalWrite(WHEEL_ENABLE_PIN, LOW);
-      digitalWrite(WHEEL_DIR_PIN, HIGH);
-      for(int i = 0; i < WHEEL_CLEAR_EXTRA_STEPS; i++) {
-        stepWheelMotorSlow();
+        // Operation failed, move the wheel backwards
+        // a few steps and try again
+        digitalWrite(WHEEL_ENABLE_PIN, LOW);
+        digitalWrite(WHEEL_DIR_PIN, HIGH);
+        for(int i = 0; i < WHEEL_CLEAR_EXTRA_STEPS; i++) {
+          stepWheelMotorSlow();
+        }
       }
-    }
+    };
+
+    tipuino_instance.errorHandler().withErrorHandler(action);
   }
 
   void stepDispenser() {
