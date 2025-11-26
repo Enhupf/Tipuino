@@ -302,13 +302,11 @@ void wait() {
 
   void moveWheelToNextClearPosition() {
 
-    auto action = [](TipuinoError& result){
+    auto action = [] {
       // Attemtp this 10 times
-      result = TipuinoError::UnableToMoveWheelToClearPosition;
       for(int i = 0; i < 1; i++) {
         if(tryMoveWheelToNextClearPosition()) {
-          result = TipuinoError::NoError;
-          return;
+          return TipuinoError::NoError;
         }
 
         // Operation failed, move the wheel backwards
@@ -319,6 +317,8 @@ void wait() {
           stepWheelMotorSlow();
         }
       }
+
+      return TipuinoError::UnableToMoveWheelToClearPosition;
     };
 
     tipuino_instance.errorHandler().withErrorHandler(action);

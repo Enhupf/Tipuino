@@ -19,9 +19,8 @@ namespace tipuino {
   template<typename F>
   void withErrorHandler(F&& action) const {
 
-    TipuinoError result = TipuinoError::ErrorCodeNotSet;
     for(;;) {
-      action(result);
+      TipuinoError result = action();
 
       if(result == TipuinoError::NoError) {
         return;
