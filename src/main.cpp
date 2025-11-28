@@ -88,23 +88,76 @@ TMC2209Stepper wheelDriver(&WHEEL_UART, R_SENSE, 0b00);
 ClickEncoder encoder(ENCODER_A_PIN, ENCODER_B_PIN, ENCODER_BUTTON_PIN, 4);
 int menuSelection = 0; // 0 = 1 box, 1 = 2 boxes
 
+void substring(char *dest, size_t destSize, const char *src, size_t start, size_t length ) {
+	size_t srcLen = strlen(src);
+
+	if (start >= srcLen) {
+		dest[0] = '\0';
+		return;
+	}
+
+	if (start + length > srcLen) {
+		length = srcLen - start;
+	}
+
+	if (length >= destSize) {
+		length = destSize - 1;   // leave room for null terminator
+	}
+
+	memcpy(dest, src + start, length);
+	dest[length] = '\0';
+}
+
+
+void printManyPages(const char* message, const int size) {
+  const int charWidth = u8g2_lcd.getMaxCharWidth();
+  const int charHeight = u8g2_lcd.getMaxCharHeight();
+
+  const int charsPerLine = max(1, (u8g2_lcd.getDisplayWidth() / charWidth) - 1);
+  const int linesPerPage = max(1, (u8g2_lcd.getDisplayHeight() / charHeight) - 1);
+
+  char buffer[linesPerPage][charsPerLine + 1];
+  int pos = 0;
+  auto isDone = [&pos, &size]{ return pos >= size; };
+
+  while(!isDone()) {
+
+    for(int row = 0; row < linesPerPage; row++) {
+
+      if(isDone()) {
+        
+        // Nothing to display, just write
+        // null terminator
+        buffer[row][0] = '\0';
+      } else {
+        substring(buffer[row], charsPerLine, message, pos, charsPerLine);
+        pos += charsPerLine;
+      }
+    }
+
+    u8g2_lcd.firstPage();
+    do {
+      for(int row = 0; row < linesPerPage; row++) {
+        u8g2_lcd.setCursor(1, (charHeight + 1) * (row + 1));
+        u8g2_lcd.print(buffer[row]);
+      }
+    } while(u8g2_lcd.nextPage());
+  }
+}
+
 class U8g2EOnError : public tipuino::ErrorHandler::OnError {
 
   public:
   bool handle(TipuinoError error) const override {
 
     char buffer[200];
-    sprintf(
+    int n = snprintf(
       buffer,
+      sizeof(buffer),
       "Error occured, code [%i]. Consult manual, resolve and continue",
       static_cast<int>(error)
     );
-    do {
-
-      u8g2_lcd.setFont(u8g2_font_6x12_tr);
-      u8g2_lcd.setCursor(0, 12);
-      u8g2_lcd.print(buffer);
-    } while (u8g2_lcd.nextPage());
+    printManyPages(buffer, n);
 
     while(encoder.getButton() != ClickEncoder::Clicked);
     return true;
@@ -303,8 +356,8 @@ void wait() {
   void moveWheelToNextClearPosition() {
 
     auto action = [] {
-      // Attemtp this 10 times
-      for(int i = 0; i < 1; i++) {
+      // Attemtp this 3 times
+      for(int i = 0; i < 3; i++) {
         if(tryMoveWheelToNextClearPosition()) {
           return TipuinoError::NoError;
         }
