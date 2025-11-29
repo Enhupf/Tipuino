@@ -63,6 +63,7 @@ void stepWheelMotor();
 void stepBoxMotor();
 void stepScrewMotor();
 void stepWheelMotorSlow();
+void showStatus();
 
 using TipuinoError = tipuino::TipuinoError;
 
@@ -113,8 +114,8 @@ void printManyPages(const char* message, const int size) {
   const int charWidth = u8g2_lcd.getMaxCharWidth();
   const int charHeight = u8g2_lcd.getMaxCharHeight();
 
-  const int charsPerLine = max(1, (u8g2_lcd.getDisplayWidth() / charWidth) - 1);
-  const int linesPerPage = max(1, (u8g2_lcd.getDisplayHeight() / charHeight) - 1);
+  const int charsPerLine = max(1, (0.9*u8g2_lcd.getDisplayWidth() / charWidth) - 1);
+  const int linesPerPage = max(1, (0.9*u8g2_lcd.getDisplayHeight() / charHeight) - 1);
 
   char buffer[linesPerPage][charsPerLine + 1];
   int pos = 0;
@@ -130,7 +131,7 @@ void printManyPages(const char* message, const int size) {
         // null terminator
         buffer[row][0] = '\0';
       } else {
-        substring(buffer[row], charsPerLine, message, pos, charsPerLine);
+        substring(buffer[row], charsPerLine + 1, message, pos, charsPerLine);
         pos += charsPerLine;
       }
     }
@@ -159,7 +160,9 @@ class U8g2EOnError : public tipuino::ErrorHandler::OnError {
     );
     printManyPages(buffer, n);
 
-    while(encoder.getButton() != ClickEncoder::Clicked);
+    while(encoder.getButton() != ClickEncoder::Clicked){}
+
+		showStatus();
     return true;
   }
 };
