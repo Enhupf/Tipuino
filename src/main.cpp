@@ -55,6 +55,12 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define NOTE_C6  1047
 #define NOTE_D6  1175
 
+// The note of the beast
+#define NOTE_ERROR 6666
+
+// One minute: 1 minute * (1000 ms/s * 60s/minute)
+const long ERROR_BEEP_TIMEOUT = 1l * 1000l * 60l;
+
 /*
  * Forward declarations
 */
@@ -64,6 +70,9 @@ void stepBoxMotor();
 void stepScrewMotor();
 void stepWheelMotorSlow();
 void showStatus();
+void setStripOk();
+void setStripError();
+void errorBeep();
 
 using TipuinoError = tipuino::TipuinoError;
 
@@ -112,10 +121,10 @@ void substring(char *dest, size_t destSize, const char *src, size_t start, size_
 
 void printManyPages(const char* message, const int size) {
   const int charWidth = u8g2_lcd.getMaxCharWidth();
-  const int charHeight = u8g2_lcd.getMaxCharHeight();
+  const int charsPerLine = max(1, (u8g2_lcd.getDisplayWidth() / (charWidth * 1.25)) - 1);
 
-  const int charsPerLine = max(1, (0.9*u8g2_lcd.getDisplayWidth() / charWidth) - 1);
-  const int linesPerPage = max(1, (0.9*u8g2_lcd.getDisplayHeight() / charHeight) - 1);
+  const int charHeight = u8g2_lcd.getMaxCharHeight();
+  const int linesPerPage = max(1, (u8g2_lcd.getDisplayHeight() / charHeight) - 1);
 
   char buffer[linesPerPage][charsPerLine + 1];
   int pos = 0;
@@ -158,10 +167,18 @@ class U8g2EOnError : public tipuino::ErrorHandler::OnError {
       "Error occured, code [%i]. Consult manual, resolve and continue",
       static_cast<int>(error)
     );
+		setStripError();
     printManyPages(buffer, n);
 
-    while(encoder.getButton() != ClickEncoder::Clicked){}
+		long errorStartTime = millis();
+    while(encoder.getButton() != ClickEncoder::Clicked){
 
+			if(millis() - errorStartTime < ERROR_BEEP_TIMEOUT) {
+				errorBeep();
+			}
+		}
+
+		setStripOk();
 		showStatus();
     return true;
   }
@@ -235,6 +252,12 @@ void finishMelody(){
   }
     noTone(BUZZER_PIN);
  }
+
+void errorBeep(){
+  tone(BUZZER_PIN, NOTE_ERROR, 200);
+  delay(200);
+  noTone(BUZZER_PIN);
+}
 
 void startBeep(){
   tone(BUZZER_PIN, NOTE_D6, 200);
@@ -465,14 +488,27 @@ void wait() {
       delay(500);
       }
 
-void setup() {
-
-  strip.begin();
+void setStripOk() {
   strip.setBrightness(255);
   strip.setPixelColor(0, strip.Color(0, 0, 150));
   strip.setPixelColor(1, strip.Color(0, 0, 150));
   strip.setPixelColor(2, strip.Color(180, 180, 180));
+	strip.show();
+}
+
+void setStripError() {
+  strip.setBrightness(255);
+	strip.setPixelColor(0, strip.Color(150, 0, 0));
+  strip.setPixelColor(1, strip.Color(150, 0, 0));
+  strip.setPixelColor(2, strip.Color(180, 180, 180));
   strip.show();
+}
+
+void setup() {
+
+  strip.begin();
+
+	setStripOk();
 
   u8g2_lcd.begin();
   delay(100);
@@ -679,9 +715,8 @@ void setup() {
         moveDispenserToNextClear();
         dispenseCount++;
       }
-    strip.setPixelColor(0, strip.Color(150, 0, 0));
-    strip.setPixelColor(1, strip.Color(150, 0, 0));
-    strip.show();
+
+			setStripError();
 
     //homingBeep();
   }
