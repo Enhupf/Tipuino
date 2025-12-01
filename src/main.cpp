@@ -500,7 +500,6 @@ void setStripError() {
   strip.setBrightness(255);
 	strip.setPixelColor(0, strip.Color(150, 0, 0));
   strip.setPixelColor(1, strip.Color(150, 0, 0));
-  strip.setPixelColor(2, strip.Color(180, 180, 180));
   strip.show();
 }
 
