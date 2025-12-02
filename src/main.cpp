@@ -490,16 +490,23 @@ void wait() {
 
 void setStripOk() {
   strip.setBrightness(255);
-  strip.setPixelColor(0, strip.Color(0, 0, 150));
-  strip.setPixelColor(1, strip.Color(0, 0, 150));
-  strip.setPixelColor(2, strip.Color(180, 180, 180));
+  strip.setPixelColor(0, strip.Color(150, 0, 0));
+  strip.setPixelColor(1, strip.Color(150, 0, 0));
 	strip.show();
 }
 
 void setStripError() {
   strip.setBrightness(255);
-	strip.setPixelColor(0, strip.Color(150, 0, 0));
-  strip.setPixelColor(1, strip.Color(150, 0, 0));
+	strip.setPixelColor(0, strip.Color(0, 150, 0));
+  strip.setPixelColor(1, strip.Color(0, 150, 0));
+  strip.show();
+}
+
+void setStripInit() {
+  strip.setBrightness(255);
+	strip.setPixelColor(0, strip.Color(0, 0, 150));
+  strip.setPixelColor(1, strip.Color(0, 0, 150));
+  strip.setPixelColor(2, strip.Color(180, 180, 180));
   strip.show();
 }
 
@@ -507,7 +514,7 @@ void setup() {
 
   strip.begin();
 
-	setStripOk();
+	setStripInit();
 
   u8g2_lcd.begin();
   delay(100);
@@ -715,7 +722,7 @@ void setup() {
         dispenseCount++;
       }
 
-			setStripError();
+			setStripOk();
 
     //homingBeep();
   }
