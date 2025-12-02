@@ -56,10 +56,10 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define NOTE_D6  1175
 
 // The note of the beast
-#define NOTE_ERROR 6666
+#define NOTE_ERROR 666
 
-// One minute: 1 minute * (1000 ms/s * 60s/minute)
-const long ERROR_BEEP_TIMEOUT = 1l * 1000l * 60l;
+// 15 seconds
+const long ERROR_BEEP_TIMEOUT = 15l* 1000l;
 
 /*
  * Forward declarations
