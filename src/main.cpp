@@ -119,7 +119,7 @@ void substring(char *dest, size_t destSize, const char *src, size_t start, size_
 }
 
 
-void printManyPages(const char* message, const int size) {
+void printManyPages(const char* message, const size_t size) {
   const int charWidth = u8g2_lcd.getMaxCharWidth();
   const int charsPerLine = max(1, (u8g2_lcd.getDisplayWidth() / (charWidth * 1.25)) - 1);
 
@@ -127,7 +127,7 @@ void printManyPages(const char* message, const int size) {
   const int linesPerPage = max(1, (u8g2_lcd.getDisplayHeight() / charHeight) - 1);
 
   char buffer[linesPerPage][charsPerLine + 1];
-  int pos = 0;
+  size_t pos = 0;
   auto isDone = [&pos, &size]{ return pos >= size; };
 
   while(!isDone()) {
@@ -161,7 +161,7 @@ class U8g2EOnError : public tipuino::ErrorHandler::OnError {
   bool handle(TipuinoError error) const override {
 
     char buffer[200];
-    int n = snprintf(
+    const size_t n = snprintf(
       buffer,
       sizeof(buffer),
       "Error occured, code [%i]. Consult manual, resolve and continue",
@@ -170,11 +170,22 @@ class U8g2EOnError : public tipuino::ErrorHandler::OnError {
 		setStripError();
     printManyPages(buffer, n);
 
-		long errorStartTime = millis();
+		const unsigned long errorStartTime = millis();
+		unsigned long beepCount = 0;
+
+		// Beep interval. Beep routine is performed
+		// once every this interval
+		const unsigned long beepInterval = 60l * 1000l;
     while(encoder.getButton() != ClickEncoder::Clicked){
 
-			if(millis() - errorStartTime < ERROR_BEEP_TIMEOUT) {
+			// Perform the beep routine once every minute.
+			if((millis() - errorStartTime) > beepCount*beepInterval) {
+				beepCount++;
 				errorBeep();
+			} else {
+				// button state is sampled every second
+				// therefore we delay to avoid busy waiting
+				delay(100);
 			}
 		}
 
@@ -254,9 +265,13 @@ void finishMelody(){
  }
 
 void errorBeep(){
-  tone(BUZZER_PIN, NOTE_ERROR, 200);
-  delay(200);
-  noTone(BUZZER_PIN);
+
+	for(int i = 0; i < 5; i++) {
+		delay(200);
+  	tone(BUZZER_PIN, NOTE_ERROR, 200);
+  	delay(1000);
+  	noTone(BUZZER_PIN);
+	}
 }
 
 void startBeep(){
