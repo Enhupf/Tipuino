@@ -306,9 +306,9 @@ void wait() {
 
   void homeDispenserMotor() {
     digitalWrite(DISPENSER_ENABLE_PIN, LOW);
-    digitalWrite(DISPENSER_DIR_PIN, HIGH);
-    while (digitalRead(DISPENSER_LIMIT_SWITCH_PIN) == HIGH) stepDispenser();
     digitalWrite(DISPENSER_DIR_PIN, LOW);
+    while (digitalRead(DISPENSER_LIMIT_SWITCH_PIN) == HIGH) stepDispenser();
+    digitalWrite(DISPENSER_DIR_PIN, HIGH);
     while (digitalRead(DISPENSER_BEAM_PIN) == LOW) stepDispenser();
     delay(DISPENSE_PAUSE_MS);
     for (int i = 0; i < DISPENSER_CLEAR_STEPS; i++) stepDispenser();
@@ -473,7 +473,7 @@ void wait() {
   void dispense_dance() {
       digitalWrite(BOX_ENABLE_PIN, LOW);
       digitalWrite(BOX_DIR_PIN, HIGH);
-      digitalWrite(DISPENSER_DIR_PIN, HIGH);
+      digitalWrite(DISPENSER_DIR_PIN, LOW);
       for (int i = 0; i < 270; i++){
         stepDispenser(); stepDispenser();
         stepBoxMotor();
@@ -484,15 +484,15 @@ void wait() {
       digitalWrite(BOX_DIR_PIN, LOW);
       for (int i = 0; i < 350; i++) stepBoxMotor();
       delay(50);
-      digitalWrite(DISPENSER_DIR_PIN, HIGH);
+      digitalWrite(DISPENSER_DIR_PIN, LOW);
       for (int i = 0; i < 1200; i++) stepDispenser();
       delay(50);
-      digitalWrite(DISPENSER_DIR_PIN, LOW);
+      digitalWrite(DISPENSER_DIR_PIN, HIGH);
       for (int i = 0; i < 1200; i++) stepDispenser();
       delay(50);
       digitalWrite(BOX_ENABLE_PIN, HIGH);
       digitalWrite(BOX_DIR_PIN, HIGH);
-      digitalWrite(DISPENSER_DIR_PIN, HIGH);
+      digitalWrite(DISPENSER_DIR_PIN, LOW);
       delay(50);
       delay(FINAL_HOMING_DELAY_MS);
       homeDispenserMotor();
