@@ -7,7 +7,7 @@
 
 namespace tipuino {
 
-  const PinValue dispenserHomeDirection = PinValue::PinValueHigh;
+  const PinValue dispenserHomeDirection = PinValue::PinValueLow;
 
   DispenserMotorDriver::DispenserMotorDriver(
     Hal* hal,

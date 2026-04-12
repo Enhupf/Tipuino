@@ -10,6 +10,8 @@
             "includePath": [
                 "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/include",
                 "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/src",
+                "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/TimerOne",
+                "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/ClickEncoder",
                 "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/Adafruit NeoPixel",
                 "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/U8g2/src",
                 "C:/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
@@ -27,6 +29,8 @@
                 "path": [
                     "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/include",
                     "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/src",
+                    "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/TimerOne",
+                    "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/ClickEncoder",
                     "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/Adafruit NeoPixel",
                     "C:/Users/GemeinsameOberfläche/Documents/GitHub/Tipuino/.pio/libdeps/megaatmega2560/U8g2/src",
                     "C:/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
@@ -41,7 +45,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60118",
+                "PLATFORMIO=60119",
                 "ARDUINO_AVR_MEGA2560",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",
