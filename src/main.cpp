@@ -26,7 +26,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 #define DISPENSE_PAUSE_MS          600
 #define MAX_DISPENSE_CYCLES        8
 #define DISPENSER_WIGGLE           250
-#define FINAL_HOMING_DELAY_MS      1000
+#define FINAL_HOMING_DELAY_MS      500
 #define DISPENSER_CLEAR_STEPS      350
 
 #define SCREW_EXTRA_STEPS          10
@@ -472,43 +472,23 @@ void wait() {
 
   void dispense_dance() {
       digitalWrite(BOX_ENABLE_PIN, LOW);
-      digitalWrite(DISPENSER_DIR_PIN, LOW);
-      digitalWrite(BOX_DIR_PIN, LOW);
-      wait();
-      for (int i = 0; i < 600; i++) stepDispenser();
-      delay(50);
-      wait();
-      for (int i = 0; i < 400; i++) stepBoxMotor();
-      delay(50);
-      wait();
-      digitalWrite(BOX_DIR_PIN, HIGH);
-      for (int i = 0; i < 400; i++) stepBoxMotor();
-      delay(50);
-      wait();
-      /*for (int i = 0; i < 300; i++){
-        stepDispenser(); stepDispenser();
-        stepBoxMotor();
-        stepDispenser(); stepDispenser();
-        stepBoxMotor();
-        stepDispenser();}
-      delay(50);*/
-      /*wait();
-      digitalWrite(DISPENSER_DIR_PIN, LOW);
-      for (int i = 0; i < 1200; i++) stepDispenser();
-      delay(50);
-      wait();
       digitalWrite(DISPENSER_DIR_PIN, HIGH);
-      for (int i = 0; i < 1200; i++) stepDispenser();
-      delay(50);
-      wait();
+      digitalWrite(DISPENSER_ENABLE_PIN, LOW);
       digitalWrite(BOX_DIR_PIN, LOW);
-      for (int i = 0; i < 400; i++) stepBoxMotor();
       delay(50);
-      wait();*/
-      digitalWrite(BOX_ENABLE_PIN, HIGH);
-      //digitalWrite(BOX_DIR_PIN, HIGH);
+      for (int i = 0; i < 2000; i++) stepDispenser();
+      delay(50);
       digitalWrite(DISPENSER_DIR_PIN, LOW);
       delay(50);
+      for (int i = 0; i < 3200; i++) stepDispenser();
+      delay(50);
+      for (int i = 0; i < 800; i++) stepBoxMotor();
+      delay(50);
+      digitalWrite(BOX_DIR_PIN, HIGH);
+      for (int i = 0; i < 800; i++) stepBoxMotor();
+      delay(50);
+      digitalWrite(BOX_ENABLE_PIN, HIGH);
+      
       delay(FINAL_HOMING_DELAY_MS);
       homeDispenserMotor();
       digitalWrite(BOX_ENABLE_PIN, LOW);
