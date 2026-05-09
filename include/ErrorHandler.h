@@ -3,6 +3,8 @@
 
 #include "TipuinoError.h"
 
+#include <TimerOne.h>
+
 namespace tipuino {
 
   class ErrorHandler {
@@ -32,6 +34,21 @@ namespace tipuino {
       // Tipuino must abort
       onError->handle(result);
     }
+  };
+
+  template<typename F, typename G>
+  void retryWithTimeout(F&& action, G&& check, unsigned long timeout, TipuinoError onFailure) {
+    unsigned long start = millis();
+    bool success = false;
+
+    while(millis() - start < timeout && !(success = check())){
+      action();
+    }
+
+    if(!success) {
+      onError->handle(onFailure);
+    }
+
   };
 
   private:

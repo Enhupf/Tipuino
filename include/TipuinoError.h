@@ -13,6 +13,7 @@ namespace tipuino {
   , StepperMotorError = 2
   , InvalidOperationError = 3
   , UnableToMoveWheelToClearPosition = 4
+  , UnableToMoveDispenserToClearPosition = 5
   };
 
   void setError(

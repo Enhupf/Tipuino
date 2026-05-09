@@ -336,7 +336,15 @@ void wait() {
 
   void moveDispenserToNextClear() {
     digitalWrite(DISPENSER_ENABLE_PIN, LOW);
-    while (digitalRead(DISPENSER_BEAM_PIN) == LOW) stepDispenser();
+
+		tipuino_instance.errorHandler().retryWithTimeout(
+			stepDispenser,
+			[](){ return digitalRead(DISPENSER_BEAM_PIN) != LOW; },
+			10000,
+			TipuinoError::UnableToMoveDispenserToClearPosition
+		);
+
+    //while (digitalRead(DISPENSER_BEAM_PIN) == LOW) stepDispenser();
     delay(DISPENSE_PAUSE_MS);
     for (int i = 0; i < DISPENSER_CLEAR_STEPS; i++) stepDispenser();
     digitalWrite(DISPENSER_ENABLE_PIN, HIGH);
