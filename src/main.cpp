@@ -61,7 +61,7 @@ U8G2_ST7567_JLX12864_1_4W_SW_SPI u8g2_lcd(U8G2_R2, LCD_CLOCK, LCD_MOSI, LCD_CS, 
 // 15 seconds
 const long ERROR_BEEP_TIMEOUT = 15l* 1000l;
 
-constexpr const long HOME_SCREW_MOTOR_TIMEOUT = 5000;
+constexpr const long HOME_SCREW_MOTOR_TIMEOUT = 1500;
 
 /*
  * Forward declarations
@@ -361,7 +361,7 @@ void wait() {
 		tipuino_instance.errorHandler().retryWithTimeout(
 			stepDispenser,
 			[](){ return digitalRead(DISPENSER_BEAM_PIN) != LOW; },
-			10000,
+			600,
 			TipuinoError::UnableToMoveDispenserToClearPosition
 		);
 
