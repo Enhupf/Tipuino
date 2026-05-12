@@ -338,7 +338,9 @@ void wait() {
 			stepScrewMotor,
 			[](){ return digitalRead(SCREW_ENCODER_PIN) != LOW; },
 			HOME_SCREW_MOTOR_TIMEOUT,
-			TipuinoError::HomeScrewUnableToFindNextPosition
+			TipuinoError::HomeScrewUnableToFindNextPosition,
+			[](){ digitalWrite(SCREW_ENABLE_PIN, HIGH); },
+			[](){ digitalWrite(SCREW_ENABLE_PIN, LOW); }
 		);
 
 		// Same as below, but calls humman if loop dosen't complete
@@ -348,7 +350,9 @@ void wait() {
 			stepScrewMotor,
 			[](){ return digitalRead(SCREW_ENCODER_PIN) != HIGH; },
 			HOME_SCREW_MOTOR_TIMEOUT,
-			TipuinoError::HomeScrewUnableToClearPosition
+			TipuinoError::HomeScrewUnableToClearPosition,
+			[](){ digitalWrite(SCREW_ENABLE_PIN, HIGH); },
+			[](){ digitalWrite(SCREW_ENABLE_PIN, LOW); }
 		);
 
     for (int i = 0; i < SCREW_EXTRA_STEPS; i++) stepScrewMotor();
@@ -358,14 +362,19 @@ void wait() {
   void moveDispenserToNextClear() {
     digitalWrite(DISPENSER_ENABLE_PIN, LOW);
 
+
+		// Same as the loop below, but calls humman if loop dosen't
+		// complete in 600
+    //while (digitalRead(DISPENSER_BEAM_PIN) == LOW) stepDispenser();
 		tipuino_instance.errorHandler().retryWithTimeout(
 			stepDispenser,
 			[](){ return digitalRead(DISPENSER_BEAM_PIN) != LOW; },
 			600,
-			TipuinoError::UnableToMoveDispenserToClearPosition
+			TipuinoError::UnableToMoveDispenserToClearPosition,
+			[](){ digitalWrite(DISPENSER_ENABLE_PIN, HIGH); },
+			[](){ digitalWrite(DISPENSER_ENABLE_PIN, LOW); }
 		);
 
-    //while (digitalRead(DISPENSER_BEAM_PIN) == LOW) stepDispenser();
     delay(DISPENSE_PAUSE_MS);
     for (int i = 0; i < DISPENSER_CLEAR_STEPS; i++) stepDispenser();
     digitalWrite(DISPENSER_ENABLE_PIN, HIGH);

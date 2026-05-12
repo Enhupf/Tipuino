@@ -36,8 +36,15 @@ namespace tipuino {
     }
   };
 
-  template<typename F, typename G>
-  void retryWithTimeout(F&& action, G&& check, unsigned long timeout, TipuinoError onFailure) {
+  template<typename F, typename G, typename Enter = void(), typename Exit = void()>
+  void retryWithTimeout(
+      F&& action,
+      G&& check,
+      unsigned long timeout,
+      TipuinoError onFailure,
+      Enter&& enterError,
+      Exit&& exitError
+    ) {
     unsigned long start = millis();
     bool success = false;
 
@@ -46,7 +53,9 @@ namespace tipuino {
     }
 
     if(!success) {
+      enterError();
       onError->handle(onFailure);
+      exitError();
     }
 
   };
