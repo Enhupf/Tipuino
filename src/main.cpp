@@ -369,7 +369,7 @@ void wait() {
 		tipuino_instance.errorHandler().retryWithTimeout(
 			stepDispenser,
 			[](){ return digitalRead(DISPENSER_BEAM_PIN) != LOW; },
-			600,
+			900,
 			TipuinoError::UnableToMoveDispenserToClearPosition,
 			[](){ digitalWrite(DISPENSER_ENABLE_PIN, HIGH); },
 			[](){ digitalWrite(DISPENSER_ENABLE_PIN, LOW); }
